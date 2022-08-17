@@ -24,7 +24,7 @@
     "prettier"
   ],
   "rules": {
-    "prettier/prettier": "error",
+    "prettier/prettier": ["error", { "endOfLine": "auto" }],
     "react-hooks/rules-of-hooks": "error",
     "react/jsx-no-bind": "off",
     "react/jsx-props-no-spreading": "off",

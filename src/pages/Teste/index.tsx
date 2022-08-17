@@ -1,10 +1,20 @@
 import React from 'react';
-import './index.scss';
+import ProductCard from '../../components/ProductCard';
+import './styles.scss';
 
-// import { Container } from './styles';
+const pizza = {
+  id: 1,
+  name: 'Pizza de Frango com Catupiry M',
+  category: { id: 1, name: 'Pizza' },
+  description: 'Frango, queijo, presunto, catupiry',
+  available: true,
+  price: 28.99,
+  img_url:
+    'https://www.receiteria.com.br/wp-content/uploads/pizza-de-frango-de-liquidificador-00.jpg',
+};
 
 const Teste: React.FC = () => {
-  return <h1>Teste</h1>;
+  return <ProductCard product={pizza} />;
 };
 
 export default Teste;
