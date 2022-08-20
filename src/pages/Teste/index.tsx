@@ -1,5 +1,5 @@
 import React from 'react';
-import './index.scss';
+import './styles.scss';
 import SideBar from '../../components/SideBar';
 
 const Teste: React.FC = () => {
