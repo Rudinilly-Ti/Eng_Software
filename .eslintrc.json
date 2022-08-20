@@ -28,6 +28,7 @@
     "react-hooks/rules-of-hooks": "error",
     "react/jsx-no-bind": "off",
     "react/jsx-props-no-spreading": "off",
+    "no-param-reassign": "off",
     "@typescript-eslint/no-explicit-any": "off",
     "react-hooks/exhaustive-deps": 1,
     "react/function-component-definition": "off",

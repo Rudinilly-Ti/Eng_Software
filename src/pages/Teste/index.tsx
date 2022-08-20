@@ -1,10 +1,13 @@
 import React from 'react';
 import './index.scss';
-
-// import { Container } from './styles';
+import SideBar from '../../components/SideBar';
 
 const Teste: React.FC = () => {
-  return <h1>Teste</h1>;
+  return (
+    <div className="container">
+      <SideBar user /> <h1>ola</h1>
+    </div>
+  );
 };
 
 export default Teste;
