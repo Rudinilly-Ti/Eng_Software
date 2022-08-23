@@ -1,0 +1,75 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.buttonSetOn{
+    display: flex;
+    min-height: 100vh;
+    justify-content: center;
+    align-items: center;
+}
+
+.open{
+    display: flex;
+    width: 300px;;
+    height: 100px;
+    
+    background-color: white;
+    align-items: center;
+    gap: 5px;
+    padding: 5px;
+}
+
+.paragraph{
+    font-size: 32px;
+    font-family: roboto;
+    padding-right: 30px;
+}
+
+#retangle{
+    width: 150px;
+    height: 78px;
+    border: 2px solid black;
+    border-radius: 60px;
+    display: flex;
+    align-items: center;
+    padding: 5px;
+    background-color: rgb(217, 209, 209);
+    animation: retangle 0.8s;
+    animation-delay: 1s;
+
+    animation-fill-mode: forwards;
+}
+
+.ball{
+    width: 60px;
+    height: 60px;
+    border-radius: 30px;
+    background-color: #Bf2604;
+    cursor: pointer;
+    animation: ball 0.3s reverse;
+    animation-delay: 1s;
+    animation-fill-mode: forwards;   /* quando para, a animação fica no canto */
+}
+
+@keyframes ball {
+    from {
+      transform: translateX(75px);
+      background-color: white;
+    }
+    to {
+      transform: translateX(0);
+      background-color: #Bf2604;
+    }
+}
+
+@keyframes retangle {
+    from {      
+      background-color:  rgb(217, 209, 209);;
+    }
+    to {     
+      background-color: #Bf2604;
+    }
+}
