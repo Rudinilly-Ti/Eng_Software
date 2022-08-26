@@ -10,7 +10,7 @@ type Props = {
   onClose(): void;
 };
 
-const ProductCard = ({ title, children, show, onClose }: Props) => {
+const GenericModal = ({ title, children, show, onClose }: Props) => {
   return (
     <div className={`modal-bg ${show ? 'modal-on' : 'modal-off'}`}>
       <div className="modal">
@@ -30,4 +30,4 @@ const ProductCard = ({ title, children, show, onClose }: Props) => {
   );
 };
 
-export default ProductCard;
+export default GenericModal;
