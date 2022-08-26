@@ -1,4 +1,4 @@
-import React, { MouseEventHandler, useState } from 'react';
+import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
 import './styles.scss';
