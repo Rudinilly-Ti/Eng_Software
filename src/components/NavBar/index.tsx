@@ -1,12 +1,29 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
+import { To, useNavigate, useLocation } from 'react-router-dom';
 import logo from '../../assets/logo.png';
 import './styles.scss';
 
 const NavBar = () => {
   const [active, setActive] = useState(true);
   const [open, setOpen] = useState(false);
+
+  const navigate = useNavigate();
+  const location = useLocation();
+  useEffect(() => {
+    if (location.pathname === '/tracking') {
+      setActive(false);
+    }
+  }, [location]);
+
+  const handleActive = useCallback(
+    (act: boolean, nav: To) => {
+      setActive(act);
+      navigate(nav);
+    },
+    [navigate],
+  );
 
   return (
     <>
@@ -36,7 +53,7 @@ const NavBar = () => {
           <li className={active ? 'navbar-active' : ''}>
             <button
               type="button"
-              onClick={() => (active ? {} : setActive(!active))}
+              onClick={() => (active ? {} : handleActive(!active, '/products'))}
             >
               Produtos
             </button>
@@ -44,7 +61,7 @@ const NavBar = () => {
           <li className={!active ? 'navbar-active' : ''}>
             <button
               type="button"
-              onClick={() => (active ? setActive(!active) : {})}
+              onClick={() => (active ? handleActive(!active, '/tracking') : {})}
             >
               Rastreamento
             </button>
