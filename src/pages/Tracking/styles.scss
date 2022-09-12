@@ -26,7 +26,7 @@ $small: 800px;
         border: 0;
         border-radius: 5px;
 
-        :hover {
+        &:hover {
           cursor: pointer;
         }
       }
@@ -48,6 +48,12 @@ $small: 800px;
         @media (max-width:700px) {
           input {
             width: 300px;
+          }
+        }
+
+        @media (max-width: 400px) {
+          input {
+            width: 200px;
           }
         }
       }
@@ -130,6 +136,26 @@ $small: 800px;
           }
         }
       }
+
+      @media (max-width: 400px) {
+        width: 280px;
+
+        h3 {
+          font-size: 26px;
+        }
+
+        .tracking-show {
+          .situation {
+            span {
+              font-size: 10px;
+            }
+
+            div {
+              width: 60px;
+            }
+          }
+        }
+      }
     }
   }
 
@@ -180,6 +206,18 @@ $small: 800px;
 
               font-size: 12px;
             }
+          }
+        }
+
+        @media (max-width: 400px) {
+          width: 280px;
+
+          h3 {
+            font-size: 26px;
+          }
+
+          table {
+            width: 280px;
           }
         }
 
