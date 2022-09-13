@@ -1,12 +1,11 @@
 import React from 'react';
-import './styles.scss';
-import SideBar from '../../components/SideBar';
-import NavBar from '../../components/NavBar';
+import OrderStatus from '../../components/OrderStatus';
+
 
 const Teste: React.FC = () => {
   return (
     <div className="container">
-      <NavBar />
+      <OrderStatus></OrderStatus>
     </div>
   );
 };
