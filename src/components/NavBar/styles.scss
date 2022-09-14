@@ -1,6 +1,7 @@
 @import '../../utils/variables.scss';
 
 .navbar-container {
+  position: fixed;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -9,7 +10,7 @@
   height: 80px;
   padding: 30px;
   background-color: $primary;
-  z-index: 1;
+  z-index: 3;
 
   .navbar-button {
     background-color: transparent;
@@ -19,7 +20,7 @@
 }
 
 .navbar-list {
-  position: absolute;
+  position: fixed;
   left: 0;
 
   display: flex;
@@ -29,7 +30,7 @@
   background-color: $primary;
   width: 180px;
   height: 100vh;
-  z-index: 3;
+  z-index: 5;
 
   transition: all .5s;
 
@@ -99,9 +100,9 @@
 .navbar-cover {
   width: 100vw;
   height: 100vh;
-  z-index: 2;
-  position: absolute;
-  background-color: #222;
+  z-index: 4;
+  position: fixed;
+  background-color: $black;
   opacity: 0.3;
 }
 

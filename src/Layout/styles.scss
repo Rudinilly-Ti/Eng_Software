@@ -1,0 +1,24 @@
+.layout-container {
+  display: flex;
+
+  transition: all .5s;
+
+  .layout-content {
+    flex-grow: 1;
+    margin-left: 300px;
+    transition: all .5s;
+  }
+
+  .layout-resized {
+    margin-left: 90px;
+  }
+}
+
+.layout-container-mobile {
+
+  .layout-content-mobile {
+    padding-top: 90px;
+    transition: all .5s;
+  }
+
+}

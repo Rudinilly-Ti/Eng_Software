@@ -1,22 +1,55 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
-import React, { useState, useCallback } from 'react';
+import React, {
+  useState,
+  useCallback,
+  SetStateAction,
+  Dispatch,
+  useEffect,
+} from 'react';
+import { useNavigate, To, useLocation } from 'react-router-dom';
 import logo from '../../assets/logo.png';
 import './styles.scss';
 
 type Props = {
   user: boolean;
+  resized: boolean;
+  setResized: Dispatch<SetStateAction<boolean>>;
 };
 
-const SideBar = ({ user }: Props) => {
+const SideBar = ({ user, resized, setResized }: Props) => {
   const [active, setActive] = useState<boolean>(true);
   const [active2, setActive2] = useState<boolean>(true);
-  const [resized, setResized] = useState<boolean>(false);
 
-  const handleActive = useCallback((act: boolean, act2: boolean) => {
-    setActive(act);
-    setActive2(act2);
-  }, []);
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.pathname === '/tracking') {
+      setActive(false);
+    } else if (location.pathname === '/requests' && user) {
+      setActive(true);
+      setActive2(true);
+    } else if (location.pathname === '/balance' && user) {
+      setActive(true);
+      setActive2(false);
+    } else if (location.pathname === '/products' && user) {
+      setActive(false);
+      setActive2(true);
+    } else if (location.pathname === '/categories' && user) {
+      setActive(false);
+      setActive2(false);
+    }
+  }, [location, user]);
+
+  const handleActive = useCallback(
+    (act: boolean, act2: boolean, nav: To) => {
+      setActive(act);
+      setActive2(act2);
+      navigate(nav);
+    },
+    [navigate],
+  );
 
   if (user) {
     return (
@@ -39,7 +72,10 @@ const SideBar = ({ user }: Props) => {
 
           <ul className="sidebar-list">
             <li className={active && active2 ? 'sidebar-active' : ''}>
-              <button onClick={() => handleActive(true, true)} type="button">
+              <button
+                onClick={() => handleActive(true, true, '/requests')}
+                type="button"
+              >
                 {!resized ? (
                   <h4>Pedidos</h4>
                 ) : (
@@ -48,7 +84,10 @@ const SideBar = ({ user }: Props) => {
               </button>
             </li>
             <li className={active && !active2 ? 'sidebar-active' : ''}>
-              <button onClick={() => handleActive(true, false)} type="button">
+              <button
+                onClick={() => handleActive(true, false, '/balance')}
+                type="button"
+              >
                 {!resized ? (
                   <h4>Caixa</h4>
                 ) : (
@@ -58,7 +97,10 @@ const SideBar = ({ user }: Props) => {
             </li>
 
             <li className={!active && active2 ? 'sidebar-active' : ''}>
-              <button onClick={() => handleActive(false, true)} type="button">
+              <button
+                onClick={() => handleActive(false, true, '/products')}
+                type="button"
+              >
                 {!resized ? (
                   <h4>Produtos</h4>
                 ) : (
@@ -68,7 +110,10 @@ const SideBar = ({ user }: Props) => {
             </li>
 
             <li className={!active && !active2 ? 'sidebar-active' : ''}>
-              <button onClick={() => handleActive(false, false)} type="button">
+              <button
+                onClick={() => handleActive(false, false, '/categories')}
+                type="button"
+              >
                 {!resized ? (
                   <h4>Categorias</h4>
                 ) : (
@@ -112,7 +157,9 @@ const SideBar = ({ user }: Props) => {
         <ul className="sidebar-list">
           <li className={active ? 'sidebar-active' : ''}>
             <button
-              onClick={() => (active ? {} : setActive(true))}
+              onClick={() =>
+                active ? {} : handleActive(true, false, '/products')
+              }
               type="button"
             >
               {!resized ? (
@@ -124,7 +171,9 @@ const SideBar = ({ user }: Props) => {
           </li>
           <li className={!active ? 'sidebar-active' : ''}>
             <button
-              onClick={() => (active ? setActive(false) : {})}
+              onClick={() =>
+                active ? handleActive(false, false, '/tracking') : {}
+              }
               type="button"
             >
               {!resized ? (
