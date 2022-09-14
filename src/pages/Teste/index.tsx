@@ -19,6 +19,16 @@ const Product1: Product = {
 };
 
 const Teste: React.FC = () => {
+  const [modalStatus, setModalStatus] = useState(false);
+
+  const closeModal = () => {
+    setModalStatus(false);
+  };
+
+  const openModal = () => {
+    setModalStatus(true);
+  };
+
   return (
     <>
       <ProductCard product={Product1} key={1} />
