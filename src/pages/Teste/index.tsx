@@ -23,7 +23,6 @@ const order: Pedido = {
 const Teste: React.FC = () => {
   return (
     <div className="container">
-      <OrderStatus pedido={order}></OrderStatus>
     </div>
   );
 };
