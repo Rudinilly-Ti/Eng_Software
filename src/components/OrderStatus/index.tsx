@@ -13,7 +13,7 @@ const OrderStatus = ({pedido}: Props) => {
             <div className="OrderInfo">
                 <div className="info">
                     <h3 > # {pedido.id}</h3>
-                    <p > {pedido.costumerName} </p>
+                    <p > {pedido.customerName} </p>
                     <p className="produto"> 
                                for com .map        </p> 
                 </div>

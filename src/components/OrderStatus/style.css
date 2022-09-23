@@ -35,6 +35,7 @@
     justify-content: center;
     margin-left: 300px;
     gap: 15px;
+    cursor: pointer;
 }
 
 .relatorio{
@@ -45,6 +46,7 @@
     justify-content: center;
     margin-left: 250px;
     gap: 15px;
+    cursor: pointer;
 }
 
 
@@ -141,7 +143,7 @@
 
     .OrderIcons{
             width: 100%;
-            margin-left: 50px;
+            margin-left: 30px;
     }
 
     .relatorio{
@@ -164,11 +166,11 @@
 
     .OrderIcons{
             width: 100%;
-            margin-left: 50px;
+           margin-left: 15px;
     }
 
     .relatorio{
-        margin-left: 40px;
+        margin-left: 20px;
     }
    
 }
