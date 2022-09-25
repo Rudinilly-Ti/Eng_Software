@@ -1,0 +1,30 @@
+.mainTable {
+
+    font-family: Arial, Helvetica, sans-serif;
+    
+
+
+    table {
+        border: 2px solid black;
+        width: 400px;
+        height: 250px;
+
+        thead {
+
+            border: 2px solid black;
+
+            tr {
+                background-color: #BF2604;
+                color: white;
+                width: 100%;
+
+
+                td {
+
+                    border: 2px solid black;
+
+                }
+            }
+        }
+    }
+}
