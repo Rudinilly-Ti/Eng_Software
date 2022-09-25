@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import './styles.scss';
 import { Outlet } from 'react-router-dom';
-import NavBar from '../components/NavBar';
-import SideBar from '../components/SideBar';
+import NavBar from '../NavBar';
+import SideBar from '../SideBar';
 
 type Props = {
   user: boolean;

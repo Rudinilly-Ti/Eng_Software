@@ -1,6 +1,6 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
-import Layout from '../Layout';
+import Layout from '../components/Layout';
 import Teste from '../pages/Teste';
 import Tracking from '../pages/Tracking';
 
