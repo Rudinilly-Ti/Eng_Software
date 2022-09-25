@@ -1,0 +1,31 @@
+
+.container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 30px;
+}
+
+.add{
+    width: 50px;
+    height: 25px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #bf2604;
+    color: white;
+    cursor: pointer;
+}
+
+.categoryContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 150px;
+}
+
+.finally{
+    display: flex;    
+    margin-top: 80px;
+}
