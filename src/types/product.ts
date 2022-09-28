@@ -1,14 +1,30 @@
-export type Category = {
-  id: number;
+export type ProductSize = {
+  id: string;
+  unit: string;
+  value: string;
+  checked?: boolean;
+  price?: number;
+};
+
+export type ProductType = {
+  id: string;
   name: string;
 };
 
-export type Product = {
-  id: number;
-  name: string;
-  category: Category;
-  description: string;
-  available: boolean;
+export type ProductSizeElement = {
+  id: string;
   price: number;
-  img_url: string;
+  productSize?: ProductSize;
+};
+
+export type Product = {
+  id?: string;
+  name: string;
+  description: string;
+  imageUrl?: string;
+  price?: number;
+  isAvailable?: boolean;
+  productTypeId: string;
+  productType?: ProductType;
+  sizes: ProductSizeElement[] | undefined;
 };
