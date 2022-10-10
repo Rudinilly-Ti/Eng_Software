@@ -5,11 +5,18 @@ import './styles.scss';
 type Props = {
   product: Product;
   className?: string;
+  click?(): void;
 };
 
-const ProductCard = ({ product, className }: Props) => {
+const ProductCard = ({ product, className, click }: Props) => {
   return (
-    <div className={`product-card ${className}`}>
+    <div
+      className={`product-card ${className}`}
+      onClick={click}
+      onKeyDown={click}
+      tabIndex={0}
+      role="link"
+    >
       <img
         className="product-image"
         src={product.imageUrl}
@@ -21,7 +28,7 @@ const ProductCard = ({ product, className }: Props) => {
           <h5 className="name">{product.name}</h5>
           <p className="description">{product.description}</p>
           <h5 className="price">
-            R$ {product.price ? product.price / 100 : 0}
+            {product.price ? `R$ ${product.price / 100}` : ''}
           </h5>
         </div>
       </div>
@@ -31,6 +38,7 @@ const ProductCard = ({ product, className }: Props) => {
 
 ProductCard.defaultProps = {
   className: '',
+  click: null,
 };
 
 export default ProductCard;

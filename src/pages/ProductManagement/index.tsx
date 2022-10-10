@@ -14,8 +14,10 @@ import './styles.scss';
 const ProductManagement = () => {
   const emptyProduct: Product = {
     name: '',
+    imageUrl:
+      'https://static.vecteezy.com/ti/vetor-gratis/t2/4141669-no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image-coming-logo-sign-simple-nature-silhouette-in-frame-ilustracaoial-isolada-vetor.jpg',
     description: '',
-    productTypeId: '',
+    productTypeId: 'none',
     sizes: undefined,
   };
 
@@ -30,6 +32,20 @@ const ProductManagement = () => {
 
   const closeCreateModal = () => {
     setShowCreateModal(false);
+    setProduct(emptyProduct);
+
+    const newProductSizes: ProductSize[] = productSizes.map((p) => {
+      return { ...p, checked: false };
+    });
+
+    setProductSizes(newProductSizes);
+
+    if (productImageFile.current !== null) productImageFile.current.value = '';
+
+    if (previewProductImage.current !== null)
+      previewProductImage.current.src = emptyProduct.imageUrl
+        ? emptyProduct.imageUrl
+        : '';
   };
 
   const openCreateModal = () => {
@@ -82,6 +98,34 @@ const ProductManagement = () => {
     setProduct(newProduct);
   }
 
+  const openProduct = (id: string) => {
+    const selectedProduct: Product | undefined = products.find(
+      (p) => p.id === id,
+    );
+
+    if (selectedProduct !== undefined) setProduct(selectedProduct);
+
+    if (selectedProduct?.sizes !== undefined) {
+      selectedProduct.sizes.map((size) => {
+        const productSizeIndex = productSizes.findIndex(
+          (pS: ProductSize) => pS.id === size.id,
+        );
+
+        const updatedProductSizes: ProductSize[] = [...productSizes];
+        updatedProductSizes[productSizeIndex] = {
+          ...updatedProductSizes[productSizeIndex],
+          checked: true,
+        };
+
+        setProductSizes(updatedProductSizes);
+
+        return null;
+      });
+    }
+
+    openCreateModal();
+  };
+
   function handleProductSizeChange(id: any) {
     const productSizeIndex = productSizes.findIndex(
       (pS: ProductSize) => pS.id === id,
@@ -122,7 +166,7 @@ const ProductManagement = () => {
   }
 
   function handleNoSizeProductPrice(newPrice: number) {
-    const newProduct = { ...product, price: newPrice };
+    const newProduct = { ...product, price: Math.trunc(newPrice * 100) };
     setProduct(newProduct);
   }
 
@@ -131,6 +175,7 @@ const ProductManagement = () => {
       .get('/products/')
       .then((response) => {
         setProducts(response.data);
+        console.log(response.data);
       })
       .catch((error) => {
         throw error;
@@ -164,7 +209,29 @@ const ProductManagement = () => {
   }
 
   function submitForm() {
-    // console.log(product);
+    const data = { ...product };
+    const formData = new FormData();
+    if (productImageFile !== null) {
+      const file = productImageFile.current?.files;
+      if (file && previewProductImage.current !== null) {
+        formData.append('image', file[0]);
+        formData.append('json', JSON.stringify(data));
+
+        console.log(data);
+
+        api
+          .post('/products/', formData)
+          .then((response) => {
+            if (response.status >= 200 && response.status < 300) {
+              closeCreateModal();
+              fetchProducts();
+            }
+          })
+          .catch((error) => {
+            throw error;
+          });
+      }
+    }
   }
 
   useEffect(() => {
@@ -181,7 +248,14 @@ const ProductManagement = () => {
       </div>
       <div className="products">
         {products.map((p: Product) => (
-          <ProductCard key={p.id} className="product" product={p} />
+          <ProductCard
+            key={p.id}
+            className="product"
+            product={p}
+            click={() => {
+              openProduct(p.id ? p.id : '');
+            }}
+          />
         ))}
       </div>
       <GenericModal
@@ -193,7 +267,7 @@ const ProductManagement = () => {
           <img
             ref={previewProductImage}
             className="previewProductImage"
-            src="https://static.vecteezy.com/ti/vetor-gratis/t2/4141669-no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image-coming-logo-sign-simple-nature-silhouette-in-frame-ilustracaoial-isolada-vetor.jpg"
+            src={product.imageUrl}
             alt="preview de imagem"
           />
           <input
@@ -209,6 +283,7 @@ const ProductManagement = () => {
               handleProductChange('name', e.currentTarget.value)
             }
             type="text"
+            value={product.name}
             className="name"
             placeholder="Nome do Produto"
           />
@@ -217,6 +292,7 @@ const ProductManagement = () => {
               handleProductChange('description', e.currentTarget.value)
             }
             type="text"
+            value={product.description}
             className="description"
             placeholder="Descrição"
           />
@@ -225,8 +301,9 @@ const ProductManagement = () => {
               handleProductChange('productTypeId', e.currentTarget.value)
             }
             className="productType"
+            value={product.productTypeId}
           >
-            <option value="none" selected disabled hidden>
+            <option value="none" disabled hidden>
               Tipo do Produto
             </option>
             {productTypes.map((p: ProductType) => (
@@ -240,7 +317,7 @@ const ProductManagement = () => {
             <div key="no-size" className="productSize">
               <input
                 onChange={() => handleNoSizeProduct()}
-                defaultChecked={product.sizes !== undefined}
+                defaultChecked={!!product.price}
                 type="checkbox"
                 id="no-product"
               />
