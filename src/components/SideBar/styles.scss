@@ -1,0 +1,122 @@
+@import "../../utils/variables.scss";
+
+.sidebar-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  position: fixed static;
+
+  background-color: $primary;
+  width: 290px;
+  height: 100vh;
+
+
+  transition: all .5s;
+
+  .sidebar-content {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+
+    align-items: center;
+    overflow: hidden;
+
+    .sidebar-arrow {
+      position: relative;
+      left: 100px;
+      color: #fff;
+      background-color: transparent;
+      border: 0;
+
+      filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+      top: 16px;
+
+      :hover {
+        cursor: pointer;
+        color: #ddd;
+      }
+
+      transition: all .5s;
+    }
+
+    .sidebar-arrow-rotated {
+      left: 0px;
+      transform: rotate(180deg);
+    }
+
+    .sidebar-logo {
+      width: 40px;
+      margin-top: 35px;
+    }
+
+    .sidebar-list {
+      list-style: none;
+      margin-top: 36px;
+      width: 100%;
+      height: fit-content;
+      height: auto;
+
+      li {
+        height: 60px;
+        width: 100%;
+
+        button {
+          display: flex;
+          align-items: center;
+          padding-left: 34px;
+          width: 100%;
+          height: 60px;
+
+          color: #fff;
+          border: 0;
+
+          background-color: transparent;
+        }
+
+        :hover {
+          background-color: $secondary;
+          cursor: pointer;
+        }
+
+      }
+
+      .sidebar-active {
+        background-color: $secondary;
+      }
+    }
+
+
+  }
+}
+
+.sidebar-exit {
+  display: flex;
+  align-items: center;
+  justify-self: flex-end;
+  width: 100%;
+  height: 60px;
+
+  button {
+    width: 100%;
+    height: 60px;
+    align-items: center;
+    display: flex;
+    padding-left: 30px;
+    color: #fff;
+    background-color: transparent;
+    border: 0;
+
+  }
+
+  :hover {
+    cursor: pointer;
+    color: #ddd;
+  }
+}
+
+.sidebar-minimized {
+  width: 80px;
+}
