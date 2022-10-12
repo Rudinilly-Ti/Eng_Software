@@ -3,7 +3,7 @@ export type ProductSize = {
   unit: string;
   value: string;
   checked?: boolean;
-  price?: number;
+  price: number;
 };
 
 export type ProductType = {
@@ -23,7 +23,7 @@ export type Product = {
   description: string;
   imageUrl?: string;
   price?: number;
-  isAvailable?: boolean;
+  isAvailable: boolean;
   productTypeId: string;
   productType?: ProductType;
   sizes: ProductSizeElement[] | undefined;

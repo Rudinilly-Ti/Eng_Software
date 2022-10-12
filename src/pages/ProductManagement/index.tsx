@@ -1,3 +1,4 @@
+/* eslint-disable react/no-danger */
 import React, { useState, useEffect, createRef } from 'react';
 import ProductCard from '../../components/ProductCard';
 import SquareButton from '../../components/SquareButton';
@@ -19,6 +20,7 @@ const ProductManagement = () => {
     description: '',
     productTypeId: 'none',
     sizes: undefined,
+    isAvailable: true,
   };
 
   const [products, setProducts] = useState<Product[]>([]);
@@ -27,11 +29,13 @@ const ProductManagement = () => {
   const [product, setProduct] = useState<Product>(emptyProduct);
   const [showSizes, setShowSizes] = useState(true);
   const [showCreateModal, setShowCreateModal] = useState(false);
+  const [onEditMode, setOnEditMode] = useState(false);
   const previewProductImage = createRef<HTMLImageElement>();
   const productImageFile = createRef<HTMLInputElement>();
 
   const closeCreateModal = () => {
     setShowCreateModal(false);
+    setOnEditMode(false);
     setProduct(emptyProduct);
 
     const newProductSizes: ProductSize[] = productSizes.map((p) => {
@@ -72,6 +76,9 @@ const ProductManagement = () => {
       case 'productTypeId':
         setProduct({ ...product, productTypeId: value });
         break;
+      case 'isAvailable':
+        setProduct({ ...product, isAvailable: value });
+        break;
       default:
         break;
     }
@@ -103,26 +110,33 @@ const ProductManagement = () => {
       (p) => p.id === id,
     );
 
-    if (selectedProduct !== undefined) setProduct(selectedProduct);
+    if (selectedProduct !== undefined)
+      setProduct({
+        ...selectedProduct,
+        price: selectedProduct.price ? selectedProduct.price / 100 : undefined,
+      });
+
+    const updatedProductSizes: ProductSize[] = [...productSizes];
 
     if (selectedProduct?.sizes !== undefined) {
-      selectedProduct.sizes.map((size) => {
+      selectedProduct.sizes.forEach((productSizeElement) => {
         const productSizeIndex = productSizes.findIndex(
-          (pS: ProductSize) => pS.id === size.id,
+          (pS: ProductSize) => pS.id === productSizeElement.productSize?.id,
         );
 
-        const updatedProductSizes: ProductSize[] = [...productSizes];
-        updatedProductSizes[productSizeIndex] = {
-          ...updatedProductSizes[productSizeIndex],
-          checked: true,
-        };
-
-        setProductSizes(updatedProductSizes);
-
-        return null;
+        if (productSizeIndex !== -1) {
+          updatedProductSizes[productSizeIndex] = {
+            ...updatedProductSizes[productSizeIndex],
+            checked: true,
+            price: productSizeElement.price / 100.0,
+          };
+        }
       });
     }
 
+    if (selectedProduct?.sizes?.length === 0) setShowSizes(false);
+    setProductSizes(updatedProductSizes);
+    setOnEditMode(true);
     openCreateModal();
   };
 
@@ -143,11 +157,10 @@ const ProductManagement = () => {
   }
 
   function handleProductPriceChange(id: any, newPrice: number) {
+    console.log(newPrice);
     const productSizeIndex = productSizes.findIndex(
       (pS: ProductSize) => pS.id === id,
     );
-
-    newPrice = Math.trunc(newPrice * 100);
 
     const updatedProductSizes: ProductSize[] = [...productSizes];
     updatedProductSizes[productSizeIndex] = {
@@ -166,7 +179,7 @@ const ProductManagement = () => {
   }
 
   function handleNoSizeProductPrice(newPrice: number) {
-    const newProduct = { ...product, price: Math.trunc(newPrice * 100) };
+    const newProduct = { ...product, price: newPrice };
     setProduct(newProduct);
   }
 
@@ -175,7 +188,6 @@ const ProductManagement = () => {
       .get('/products/')
       .then((response) => {
         setProducts(response.data);
-        console.log(response.data);
       })
       .catch((error) => {
         throw error;
@@ -208,7 +220,26 @@ const ProductManagement = () => {
       });
   }
 
-  function submitForm() {
+  async function deleteProduct(id: string) {
+    // eslint-disable-next-line no-restricted-globals, no-alert
+    const confirmed = confirm(
+      'Você tem certeza que quer deletar este produto?',
+    );
+
+    if (confirmed) {
+      await api
+        .delete(`/products/${id}`)
+        .then(() => {
+          fetchProducts();
+          closeCreateModal();
+        })
+        .catch((error) => {
+          throw error;
+        });
+    }
+  }
+
+  async function submitForm() {
     const data = { ...product };
     const formData = new FormData();
     if (productImageFile !== null) {
@@ -217,10 +248,32 @@ const ProductManagement = () => {
         formData.append('image', file[0]);
         formData.append('json', JSON.stringify(data));
 
-        console.log(data);
-
-        api
+        await api
           .post('/products/', formData)
+          .then((response) => {
+            if (response.status >= 200 && response.status < 300) {
+              closeCreateModal();
+              fetchProducts();
+            }
+          })
+          .catch((error) => {
+            throw error;
+          });
+      }
+    }
+  }
+
+  async function updateProduct() {
+    const data = { ...product };
+    const formData = new FormData();
+    if (productImageFile !== null) {
+      const file = productImageFile.current?.files;
+      if (file && previewProductImage.current !== null) {
+        formData.append('image', file[0]);
+        formData.append('json', JSON.stringify(data));
+
+        await api
+          .patch(`/products/${product.id}`, formData)
           .then((response) => {
             if (response.status >= 200 && response.status < 300) {
               closeCreateModal();
@@ -247,16 +300,18 @@ const ProductManagement = () => {
         <SquareButton click={openCreateModal} char="+" />
       </div>
       <div className="products">
-        {products.map((p: Product) => (
-          <ProductCard
-            key={p.id}
-            className="product"
-            product={p}
-            click={() => {
-              openProduct(p.id ? p.id : '');
-            }}
-          />
-        ))}
+        {products.map((p: Product) => {
+          return (
+            <ProductCard
+              key={p.id}
+              className="product"
+              product={p}
+              click={() => {
+                openProduct(p.id ? p.id : '');
+              }}
+            />
+          );
+        })}
       </div>
       <GenericModal
         title="Novo Produto"
@@ -317,7 +372,7 @@ const ProductManagement = () => {
             <div key="no-size" className="productSize">
               <input
                 onChange={() => handleNoSizeProduct()}
-                defaultChecked={!!product.price}
+                checked={!showSizes}
                 type="checkbox"
                 id="no-product"
               />
@@ -330,6 +385,7 @@ const ProductManagement = () => {
                 className={`price ${!showSizes ? 'displayPrice' : ''}`}
                 placeholder="Preço"
                 id="price"
+                defaultValue={product.price}
               />
             </div>
             {productSizes.map((p: ProductSize) => (
@@ -337,7 +393,7 @@ const ProductManagement = () => {
                 <input
                   disabled={!showSizes}
                   onChange={() => handleProductSizeChange(p.id)}
-                  defaultChecked={p.checked}
+                  checked={p.checked}
                   type="checkbox"
                   id={p.id}
                 />
@@ -346,6 +402,7 @@ const ProductManagement = () => {
                 </label>
                 <input
                   type="text"
+                  defaultValue={p.price}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                     handleProductPriceChange(
                       p.id,
@@ -361,9 +418,46 @@ const ProductManagement = () => {
               </div>
             ))}
           </div>
-          <button onClick={submitForm} type="button">
-            Cadastrar
-          </button>
+          <div className="productAvailability">
+            <h5>Disponibilidade: </h5>
+            <div key="isAvailable" className="availabilityOption">
+              <input
+                onChange={() =>
+                  handleProductChange('isAvailable', !product.isAvailable)
+                }
+                checked={product.isAvailable}
+                type="checkbox"
+              />
+              <label htmlFor="isAailable">Disponível</label>
+            </div>
+          </div>
+          <div className="actionButtons">
+            <button
+              onClick={submitForm}
+              type="button"
+              className={!onEditMode ? '' : 'buttonDisabled'}
+            >
+              Cadastrar
+            </button>
+            <button
+              className={onEditMode ? '' : 'buttonDisabled'}
+              onClick={() => {
+                deleteProduct(product.id ? product.id : '');
+              }}
+              type="button"
+            >
+              Deletar
+            </button>
+            <button
+              className={onEditMode ? '' : 'buttonDisabled'}
+              onClick={() => {
+                updateProduct();
+              }}
+              type="button"
+            >
+              Editar
+            </button>
+          </div>
         </form>
       </GenericModal>
     </div>
