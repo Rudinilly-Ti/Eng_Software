@@ -1,7 +1,7 @@
 .modal-bg {
-  position: absolute;
+  position: fixed;
   width: 100vw;
-  height: 100vh;
+  height: 100%;
   background-color: rgba(#676767, 0.5);
   display: flex;
   align-items: center;
@@ -12,19 +12,24 @@
   left: 0;
 
   .modal {
-    min-width: 300px;
-    max-width: 700px;
-    min-height: 250px;
-    max-height: 500px;
+    min-width: 270px;
+    max-width: 800px;
+    min-height: 450px;
+    max-height: 800px;
+    width: 30%;
     border-radius: 8px;
-    padding: 20px;
     background-color: white;
+
+    @media (max-width: 364px) {
+      width: 0%;
+    }
     
     .close-modal-button {
       width: 100%;
       height: 20px;
       display: flex;
       justify-content: flex-end;
+      padding: 20px 20px 20px 0px;
 
       .close-icon {
         font-size: 1.2rem;
@@ -41,13 +46,15 @@
       width: 100%;
       text-align: center;
       margin-bottom: 15px;
+      padding: 0px 20px;
     }
     
     .modal-content {
       width: 100%;
       min-height: 205px;
-      max-height: 400px;
+      max-height: 550px;
       overflow-y: auto;
+      padding: 0px 20px;
     }
   }
 }
