@@ -4,6 +4,7 @@ import Layout from '../components/Layout';
 import Teste from '../pages/Teste';
 import Tracking from '../pages/Tracking';
 import ProductManagement from '../pages/ProductManagement';
+import Login from '../pages/Login';
 
 const user = true;
 
@@ -16,6 +17,7 @@ const MyRoutes: React.FC = () => (
       />
       <Route path="tracking" element={<Tracking />} />
     </Route>
+    <Route path="/login" element={<Login />} />
   </Routes>
 );
 
