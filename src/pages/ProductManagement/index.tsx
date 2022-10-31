@@ -157,7 +157,6 @@ const ProductManagement = () => {
   }
 
   function handleProductPriceChange(id: any, newPrice: number) {
-    console.log(newPrice);
     const productSizeIndex = productSizes.findIndex(
       (pS: ProductSize) => pS.id === id,
     );

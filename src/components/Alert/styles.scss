@@ -1,0 +1,44 @@
+@keyframes noticeDisappear {
+  from {
+  }
+  to {
+    visibility: hidden;
+  }
+}
+
+.notice-card {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 270px;
+  height: 60px;
+  color: white;
+  font-size: 14px;
+  animation-duration: 5s;
+  animation-fill-mode: forwards;
+  animation-name: noticeDisappear;
+}
+
+@keyframes barTimeAnim {
+  from {
+    width: 100%;
+  }
+  to {
+    width: 0%;
+  }
+}
+
+.notice-card .time-bar {
+  height: 6px;
+  width: 100%;
+  animation-duration: 5s;
+  animation-name: barTimeAnim;
+}
+
+.notice-card p {
+  padding: 8px;
+  user-select: none;
+}
