@@ -4,11 +4,19 @@ import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
 import './addButton.scss';
 import GenericModal from '../../GenericModal';
 import FinallyButton from './FinallyButton';
+import { Category } from '../../../types/category';
+import api from '../../../services/api';
 
-const AddButton = () => {
+type Props = {
+  fetchCategories(): void;
+};
+
+const AddButton = ({ fetchCategories }: Props) => {
   const [modalStatus, setModalStatus] = useState(false);
+  const [category, setCategory] = useState<Category>({});
 
   const closeModal = () => {
+    setCategory({});
     setModalStatus(false);
   };
 
@@ -16,16 +24,25 @@ const AddButton = () => {
     setModalStatus(true);
   };
 
+  async function submitForm() {
+    await api
+      .post('/product-types', category)
+      .then((response) => {
+        if (response.status >= 200 && response.status < 300) {
+          closeModal();
+          fetchCategories();
+        }
+      })
+      .catch((error) => {
+        throw error;
+      });
+  }
+
   return (
     <>
       <div className="container">
-        <button type="button" className="add">
-          <FontAwesomeIcon
-            icon={solid('plus')}
-            size="sm"
-            onClick={openModal}
-            type="button"
-          />
+        <button type="button" className="add" onClick={openModal}>
+          <FontAwesomeIcon icon={solid('plus')} size="sm" type="button" />
         </button>
       </div>
 
@@ -36,9 +53,16 @@ const AddButton = () => {
       >
         <div className="categoryContainer">
           Adicionar Categoria:
-          <input type="text" />
+          <input
+            value={category.name ? category.name : ''}
+            type="text"
+            placeholder="Nome da Categoria"
+            onChange={(e) => {
+              setCategory({ name: e.currentTarget.value });
+            }}
+          />
           <div className="finally">
-            <FinallyButton />
+            <FinallyButton submit={submitForm} />
           </div>
         </div>
       </GenericModal>

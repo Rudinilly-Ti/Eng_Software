@@ -5,6 +5,7 @@ import Teste from '../pages/Teste';
 import Tracking from '../pages/Tracking';
 import ProductManagement from '../pages/ProductManagement';
 import Login from '../pages/Login';
+import Category from '../pages/Category';
 
 const user = true;
 
@@ -15,6 +16,7 @@ const MyRoutes: React.FC = () => (
         path="products"
         element={user ? <ProductManagement /> : <Teste />}
       />
+      <Route path="category" element={user ? <Category /> : null} />
       <Route path="tracking" element={<Tracking />} />
     </Route>
     <Route path="/login" element={<Login />} />
