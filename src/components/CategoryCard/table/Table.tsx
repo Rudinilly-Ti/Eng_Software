@@ -47,23 +47,20 @@ const CategoryTable = () => {
       <table>
         <thead>
           <tr>
-            <td> Categorias </td>
-            <td> Editar</td>
-            <td> Excluir</td>
+            <th> Categorias </th>
+            <th colSpan={2}> Ações </th>
           </tr>
         </thead>
         <tbody>
           {categories.map((category) => {
             return (
               <tr key={category.id}>
-                <td> {category.name} </td>
-                <td>
+                <td className="category-name"> {category.name} </td>
+                <td className="actions-column" colSpan={2}>
                   <EditButton
                     fetchCategories={fetchCategories}
                     category={category}
                   />
-                </td>
-                <td>
                   <DeleteButton
                     setMessage={setMessage}
                     fetchCategories={fetchCategories}
