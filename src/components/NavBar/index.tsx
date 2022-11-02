@@ -68,9 +68,19 @@ const NavBar = () => {
           </li>
         </ul>
       </div>
-      <div
-        className={open ? 'navbar-cover' : 'navbar-cover navbar-cover-closed'}
-      />
+      <button
+        className={
+          open
+            ? 'navbar-button-cover'
+            : 'navbar-button-cover  navbar-cover-closed'
+        }
+        type="button"
+        onClick={() => setOpen(!open)}
+      >
+        <div
+          className={open ? 'navbar-cover' : 'navbar-cover navbar-cover-closed'}
+        />
+      </button>
     </>
   );
 };

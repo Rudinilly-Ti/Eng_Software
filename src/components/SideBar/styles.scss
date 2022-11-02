@@ -12,8 +12,8 @@
   width: 290px;
   height: 100vh;
 
-
   transition: all .5s;
+  z-index: 3;
 
   .sidebar-content {
     display: flex;
