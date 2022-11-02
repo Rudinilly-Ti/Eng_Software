@@ -293,7 +293,7 @@ const ProductManagement = () => {
   }, []);
 
   return (
-    <div className="container">
+    <div className="container-products">
       <div className="page-title">
         <h1>Produtos</h1>
         <SquareButton click={openCreateModal} char="+" />
