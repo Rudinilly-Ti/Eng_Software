@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import EditButton from '../Buttons/EditButton';
 import DeleteButton from '../Buttons/DeleteButton';
 import AddButton from '../Buttons/AddButton';
@@ -44,35 +44,36 @@ const CategoryTable = () => {
         timeBarColor={alertJSON.secondaryColor}
         className={alertJSON.className}
       />
-      
-      <div className="page-category-title">
-        <h1>Categorias</h1>
-        <AddButton fetchCategories={fetchCategories}></AddButton>
+
+      <div className="container-categories">
+        <div className="page-title">
+          <h1>Categorias</h1>
+          <AddButton fetchCategories={fetchCategories} />
+        </div>
+
+        <table>
+          <tbody>
+            {categories.map((category) => {
+              return (
+                <tr key={category.id}>
+                  <td className="category-name"> {category.name} </td>
+                  <td className="actions-column" colSpan={2}>
+                    <EditButton
+                      fetchCategories={fetchCategories}
+                      category={category}
+                    />
+                    <DeleteButton
+                      setMessage={setMessage}
+                      fetchCategories={fetchCategories}
+                      category={category}
+                    />
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
       </div>
-
-      <table>
-        <tbody>
-          {categories.map((category) => {
-            return (
-              <tr key={category.id}>
-                <td className="category-name"> {category.name} </td>
-                <td className="actions-column" colSpan={2}>
-                  <EditButton
-                    fetchCategories={fetchCategories}
-                    category={category}
-                  />
-                  <DeleteButton
-                    setMessage={setMessage}
-                    fetchCategories={fetchCategories}
-                    category={category}
-                  />
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-
-      </table>
     </div>
   );
 };

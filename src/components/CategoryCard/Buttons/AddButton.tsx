@@ -42,7 +42,7 @@ const AddButton = ({ fetchCategories }: Props) => {
   return (
     <>
       <div className="container">
-       <SquareButton char={'+'} click={openModal}></SquareButton>
+        <SquareButton char="+" click={openModal} />
       </div>
 
       <GenericModal

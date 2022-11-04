@@ -27,7 +27,7 @@ const DeleteButton = ({ category, fetchCategories, setMessage }: Props) => {
   async function remove() {
     await api
       .delete(`/product-types/${category.id}`)
-      .then((response: { status: number; }) => {
+      .then((response: { status: number }) => {
         if (response.status >= 200 && response.status < 300) {
           closeModal();
           fetchCategories();
