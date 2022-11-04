@@ -1,0 +1,17 @@
+.buttons-finaly {
+    color: white;
+    background-color: #bf2604;
+    height: 40px;
+    width: 70px;
+    border-radius: 8px;
+    font-family: Arial, Helvetica, sans-serif;
+    border: none;
+    cursor: pointer;
+}
+
+.categoryContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 150px;
+}

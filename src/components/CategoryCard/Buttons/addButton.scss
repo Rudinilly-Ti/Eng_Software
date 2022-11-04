@@ -4,10 +4,21 @@
     width: fit-content;
 }
 
+.page-category-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #2b2b2b;
+    margin-top: 20px;
+    width: 92%;
+    margin-left: 25px;
+}
+
 .add{
-    width: 50px;
-    height: 25px;
-    border-radius: 5px;
+    width: 60px;
+    height: 30px;
+    border-radius: 10px;
     display: flex;
     justify-content: center;
     align-items: center;

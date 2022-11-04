@@ -1,5 +1,4 @@
-import React from 'react';
-import './buttons.scss';
+import './finallyButton.scss';
 
 type Props = {
   submit?(): void;
@@ -21,7 +20,7 @@ const FinallyButton = ({ submit, edit, remove }: Props) => {
         onClick={() => {
           execute(submit, edit, remove);
         }}
-        className="buttonss"
+        className="buttons-finaly"
       >
         Finalizar
       </button>

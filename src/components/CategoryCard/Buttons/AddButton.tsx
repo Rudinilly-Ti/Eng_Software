@@ -6,6 +6,7 @@ import GenericModal from '../../GenericModal';
 import FinallyButton from './FinallyButton';
 import { Category } from '../../../types/category';
 import api from '../../../services/api';
+import SquareButton from '../../SquareButton';
 
 type Props = {
   fetchCategories(): void;
@@ -41,9 +42,7 @@ const AddButton = ({ fetchCategories }: Props) => {
   return (
     <>
       <div className="container">
-        <button type="button" className="add" onClick={openModal}>
-          <FontAwesomeIcon icon={solid('plus')} size="sm" type="button" />
-        </button>
+       <SquareButton char={'+'} click={openModal}></SquareButton>
       </div>
 
       <GenericModal

@@ -27,7 +27,7 @@ const DeleteButton = ({ category, fetchCategories, setMessage }: Props) => {
   async function remove() {
     await api
       .delete(`/product-types/${category.id}`)
-      .then((response) => {
+      .then((response: { status: number; }) => {
         if (response.status >= 200 && response.status < 300) {
           closeModal();
           fetchCategories();
@@ -72,7 +72,7 @@ const DeleteButton = ({ category, fetchCategories, setMessage }: Props) => {
         <button type="button" className="buttonss">
           <FontAwesomeIcon
             icon={solid('trash')}
-            size="sm"
+            size="lg"
             onClick={openModal}
             type="button"
           />

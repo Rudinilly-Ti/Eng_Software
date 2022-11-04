@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
 import './buttons.scss';
@@ -45,7 +45,7 @@ const EditButton = ({ category, fetchCategories }: Props) => {
         <button type="button" className="buttonss">
           <FontAwesomeIcon
             icon={solid('pen')}
-            size="sm"
+            size="lg"
             onClick={openModal}
             type="button"
           />

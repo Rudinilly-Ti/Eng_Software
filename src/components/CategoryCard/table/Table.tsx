@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import EditButton from '../Buttons/EditButton';
 import DeleteButton from '../Buttons/DeleteButton';
 import AddButton from '../Buttons/AddButton';
@@ -44,13 +44,13 @@ const CategoryTable = () => {
         timeBarColor={alertJSON.secondaryColor}
         className={alertJSON.className}
       />
+      
+      <div className="page-category-title">
+        <h1>Categorias</h1>
+        <AddButton fetchCategories={fetchCategories}></AddButton>
+      </div>
+
       <table>
-        <thead>
-          <tr>
-            <th> Categorias </th>
-            <th colSpan={2}> Ações </th>
-          </tr>
-        </thead>
         <tbody>
           {categories.map((category) => {
             return (
@@ -72,13 +72,6 @@ const CategoryTable = () => {
           })}
         </tbody>
 
-        <tfoot>
-          <tr>
-            <td colSpan={3} style={{ width: 300 }}>
-              <AddButton fetchCategories={fetchCategories} />
-            </td>
-          </tr>
-        </tfoot>
       </table>
     </div>
   );
