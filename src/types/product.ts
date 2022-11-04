@@ -13,14 +13,34 @@ export type Size = {
   };
 }
 
-export type Product = {
-  id: number;
-  name: string;
-  productType: Category;
-  description: string;
-  isAvailable: boolean;
-  sizes: Size[];
-  size: string;
+export type ProductSize = {
+  id: string;
+  unit: string;
+  value: string;
+  checked?: boolean;
   price: number;
-  img_url: string;
+};
+
+export type ProductType = {
+  id: string;
+  name: string;
+};
+
+export type ProductSizeElement = {
+  id: string;
+  price: number;
+  productSize?: ProductSize;
+};
+
+export type Product = {
+  id?: string;
+  name: string;
+  description: string;
+  imageUrl?: string;
+  price?: number;
+  isAvailable: boolean;
+  productTypeId: string;
+  productType?: ProductType;
+  sizes: ProductSizeElement[] | undefined;
+  size: string;
 };
