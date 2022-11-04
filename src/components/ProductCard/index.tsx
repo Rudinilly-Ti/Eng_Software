@@ -1,4 +1,5 @@
 import React from 'react';
+import api from '../../services/api';
 import { Product } from '../../types/product';
 import './styles.scss';
 
@@ -19,7 +20,7 @@ const ProductCard = ({ product, className, click }: Props) => {
     >
       <img
         className="product-image"
-        src={product.imageUrl}
+        src={`${api.defaults.baseURL}/${product.imageUrl}`}
         alt={product.name}
       />
       <div className="product-details">

@@ -10,6 +10,7 @@ import React, {
 import { useNavigate, To, useLocation } from 'react-router-dom';
 import logo from '../../assets/logo.png';
 import './styles.scss';
+import { logout } from '../../services/auth';
 
 type Props = {
   user: boolean;
@@ -27,7 +28,7 @@ const SideBar = ({ user, resized, setResized }: Props) => {
   useEffect(() => {
     if (location.pathname === '/tracking') {
       setActive(false);
-    } else if (location.pathname === '/requests' && user) {
+    } else if (location.pathname === '/orders' && user) {
       setActive(true);
       setActive2(true);
     } else if (location.pathname === '/balance' && user) {
@@ -73,7 +74,7 @@ const SideBar = ({ user, resized, setResized }: Props) => {
           <ul className="sidebar-list">
             <li className={active && active2 ? 'sidebar-active' : ''}>
               <button
-                onClick={() => handleActive(true, true, '/requests')}
+                onClick={() => handleActive(true, true, '/orders')}
                 type="button"
               >
                 {!resized ? (
@@ -124,7 +125,13 @@ const SideBar = ({ user, resized, setResized }: Props) => {
           </ul>
         </div>
         <div className="sidebar-exit">
-          <button type="button">
+          <button
+            type="button"
+            onClick={() => {
+              logout();
+              navigate('/');
+            }}
+          >
             <FontAwesomeIcon
               icon={solid('arrow-right-from-bracket')}
               size="2x"

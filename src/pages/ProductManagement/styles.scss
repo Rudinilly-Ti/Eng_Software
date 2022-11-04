@@ -22,6 +22,9 @@
 
   .products {
     width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
 
     @media (max-width: 768px) {
       display: flex;
@@ -31,7 +34,6 @@
 
     .product {
       float: left;
-      margin-right: 30px;
       margin-bottom: 30px;
       width: 0%;
 

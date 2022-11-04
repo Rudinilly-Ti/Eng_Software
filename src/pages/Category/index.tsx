@@ -1,7 +1,8 @@
 import React from 'react';
 import CategoryTable from '../../components/CategoryCard/table/Table';
 
-const Teste: React.FC = () => {
+const Category = () => {
   return <CategoryTable />;
 };
-export default Teste;
+
+export default Category;

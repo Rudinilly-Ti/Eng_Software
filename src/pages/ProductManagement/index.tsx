@@ -11,6 +11,7 @@ import {
 } from '../../types/product';
 import api from '../../services/api';
 import './styles.scss';
+import Alert from '../../components/Alert';
 
 const ProductManagement = () => {
   const emptyProduct: Product = {
@@ -32,6 +33,12 @@ const ProductManagement = () => {
   const [onEditMode, setOnEditMode] = useState(false);
   const previewProductImage = createRef<HTMLImageElement>();
   const productImageFile = createRef<HTMLInputElement>();
+  const [alertJSON, setAlertJSON] = useState({
+    primaryColor: '',
+    secondaryColor: '',
+    msg: '',
+    className: '',
+  });
 
   const closeCreateModal = () => {
     setShowCreateModal(false);
@@ -188,8 +195,21 @@ const ProductManagement = () => {
       .then((response) => {
         setProducts(response.data);
       })
-      .catch((error) => {
-        throw error;
+      .catch(() => {
+        setTimeout(() => {
+          setAlertJSON({
+            primaryColor: '',
+            secondaryColor: '',
+            msg: '',
+            className: '',
+          });
+        }, 5000);
+        return setAlertJSON({
+          primaryColor: '#BF2604',
+          secondaryColor: '#730202',
+          msg: 'Erro ao carregar produtos',
+          className: 'notice-card',
+        });
       });
   }
 
@@ -199,8 +219,21 @@ const ProductManagement = () => {
       .then((response) => {
         setProductTypes(response.data);
       })
-      .catch((error) => {
-        throw error;
+      .catch(() => {
+        setTimeout(() => {
+          setAlertJSON({
+            primaryColor: '',
+            secondaryColor: '',
+            msg: '',
+            className: '',
+          });
+        }, 5000);
+        return setAlertJSON({
+          primaryColor: '#BF2604',
+          secondaryColor: '#730202',
+          msg: 'Erro ao carregar categorias',
+          className: 'notice-card',
+        });
       });
   }
 
@@ -214,8 +247,21 @@ const ProductManagement = () => {
         }));
         setProductSizes(formatedData);
       })
-      .catch((error) => {
-        throw error;
+      .catch(() => {
+        setTimeout(() => {
+          setAlertJSON({
+            primaryColor: '',
+            secondaryColor: '',
+            msg: '',
+            className: '',
+          });
+        }, 5000);
+        return setAlertJSON({
+          primaryColor: '#BF2604',
+          secondaryColor: '#730202',
+          msg: 'Erro ao carregar tamanho dos produtos',
+          className: 'notice-card',
+        });
       });
   }
 
@@ -231,9 +277,36 @@ const ProductManagement = () => {
         .then(() => {
           fetchProducts();
           closeCreateModal();
+          setTimeout(() => {
+            setAlertJSON({
+              primaryColor: '',
+              secondaryColor: '',
+              msg: '',
+              className: '',
+            });
+          }, 5000);
+          return setAlertJSON({
+            primaryColor: '#68a373',
+            secondaryColor: '#39593f',
+            msg: 'Sucesso ao deletar o produto',
+            className: 'notice-card',
+          });
         })
-        .catch((error) => {
-          throw error;
+        .catch(() => {
+          setTimeout(() => {
+            setAlertJSON({
+              primaryColor: '',
+              secondaryColor: '',
+              msg: '',
+              className: '',
+            });
+          }, 5000);
+          return setAlertJSON({
+            primaryColor: '#BF2604',
+            secondaryColor: '#730202',
+            msg: 'Erro ao deletar o produto',
+            className: 'notice-card',
+          });
         });
     }
   }
@@ -253,10 +326,37 @@ const ProductManagement = () => {
             if (response.status >= 200 && response.status < 300) {
               closeCreateModal();
               fetchProducts();
+              setTimeout(() => {
+                setAlertJSON({
+                  primaryColor: '',
+                  secondaryColor: '',
+                  msg: '',
+                  className: '',
+                });
+              }, 5000);
+              setAlertJSON({
+                primaryColor: '#68a373',
+                secondaryColor: '#39593f',
+                msg: 'Sucesso ao cadastrar produto',
+                className: 'notice-card',
+              });
             }
           })
-          .catch((error) => {
-            throw error;
+          .catch(() => {
+            setTimeout(() => {
+              setAlertJSON({
+                primaryColor: '',
+                secondaryColor: '',
+                msg: '',
+                className: '',
+              });
+            }, 5000);
+            return setAlertJSON({
+              primaryColor: '#BF2604',
+              secondaryColor: '#730202',
+              msg: 'Erro ao cadastrar produto',
+              className: 'notice-card',
+            });
           });
       }
     }
@@ -277,10 +377,37 @@ const ProductManagement = () => {
             if (response.status >= 200 && response.status < 300) {
               closeCreateModal();
               fetchProducts();
+              setTimeout(() => {
+                setAlertJSON({
+                  primaryColor: '',
+                  secondaryColor: '',
+                  msg: '',
+                  className: '',
+                });
+              }, 5000);
+              setAlertJSON({
+                primaryColor: '#68a373',
+                secondaryColor: '#39593f',
+                msg: 'Sucesso ao atualizar o produto',
+                className: 'notice-card',
+              });
             }
           })
-          .catch((error) => {
-            throw error;
+          .catch(() => {
+            setTimeout(() => {
+              setAlertJSON({
+                primaryColor: '',
+                secondaryColor: '',
+                msg: '',
+                className: '',
+              });
+            }, 5000);
+            return setAlertJSON({
+              primaryColor: '#BF2604',
+              secondaryColor: '#730202',
+              msg: 'Erro ao atualizar o produto',
+              className: 'notice-card',
+            });
           });
       }
     }
@@ -293,173 +420,181 @@ const ProductManagement = () => {
   }, []);
 
   return (
-    <div className="container-products">
-      <div className="page-title">
-        <h1>Produtos</h1>
-        <SquareButton click={openCreateModal} char="+" />
-      </div>
-      <div className="products">
-        {products.map((p: Product) => {
-          return (
-            <ProductCard
-              key={p.id}
-              className="product"
-              product={p}
-              click={() => {
-                openProduct(p.id ? p.id : '');
-              }}
+    <>
+      <Alert
+        notice={alertJSON.msg}
+        cardColor={alertJSON.primaryColor}
+        timeBarColor={alertJSON.secondaryColor}
+        className={alertJSON.className}
+      />
+      <div className="container-products">
+        <div className="page-title">
+          <h1>Produtos</h1>
+          <SquareButton click={openCreateModal} char="+" />
+        </div>
+        <div className="products">
+          {products.map((p: Product) => {
+            return (
+              <ProductCard
+                key={p.id}
+                className="product"
+                product={p}
+                click={() => {
+                  openProduct(p.id ? p.id : '');
+                }}
+              />
+            );
+          })}
+        </div>
+        <GenericModal
+          title="Novo Produto"
+          show={showCreateModal}
+          onClose={closeCreateModal}
+        >
+          <form className="createProduct" action="/">
+            <img
+              ref={previewProductImage}
+              className="previewProductImage"
+              src={`${api.defaults.baseURL}/${product.imageUrl}`}
+              alt="preview de imagem"
             />
-          );
-        })}
-      </div>
-      <GenericModal
-        title="Novo Produto"
-        show={showCreateModal}
-        onClose={closeCreateModal}
-      >
-        <form className="createProduct" action="/">
-          <img
-            ref={previewProductImage}
-            className="previewProductImage"
-            src={product.imageUrl}
-            alt="preview de imagem"
-          />
-          <input
-            onChange={handleProductImageChange}
-            ref={productImageFile}
-            type="file"
-            id="image"
-            className="image"
-            accept=".png, .jpg, .jpeg"
-          />
-          <input
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              handleProductChange('name', e.currentTarget.value)
-            }
-            type="text"
-            value={product.name}
-            className="name"
-            placeholder="Nome do Produto"
-          />
-          <input
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              handleProductChange('description', e.currentTarget.value)
-            }
-            type="text"
-            value={product.description}
-            className="description"
-            placeholder="Descrição"
-          />
-          <select
-            onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
-              handleProductChange('productTypeId', e.currentTarget.value)
-            }
-            className="productType"
-            value={product.productTypeId}
-          >
-            <option value="none" disabled hidden>
-              Tipo do Produto
-            </option>
-            {productTypes.map((p: ProductType) => (
-              <option key={p.id} value={p.id}>
-                {p.name}
+            <input
+              onChange={handleProductImageChange}
+              ref={productImageFile}
+              type="file"
+              id="image"
+              className="image"
+              accept=".png, .jpg, .jpeg"
+            />
+            <input
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                handleProductChange('name', e.currentTarget.value)
+              }
+              type="text"
+              value={product.name}
+              className="name"
+              placeholder="Nome do Produto"
+            />
+            <input
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                handleProductChange('description', e.currentTarget.value)
+              }
+              type="text"
+              value={product.description}
+              className="description"
+              placeholder="Descrição"
+            />
+            <select
+              onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+                handleProductChange('productTypeId', e.currentTarget.value)
+              }
+              className="productType"
+              value={product.productTypeId}
+            >
+              <option value="none" disabled hidden>
+                Tipo do Produto
               </option>
-            ))}
-          </select>
-          <div className="productSizes">
-            <h5>Tamanhos: </h5>
-            <div key="no-size" className="productSize">
-              <input
-                onChange={() => handleNoSizeProduct()}
-                checked={!showSizes}
-                type="checkbox"
-                id="no-product"
-              />
-              <label htmlFor="no-size">Sem tamanho</label>
-              <input
-                type="text"
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  handleNoSizeProductPrice(parseFloat(e.currentTarget.value))
-                }
-                className={`price ${!showSizes ? 'displayPrice' : ''}`}
-                placeholder="Preço"
-                id="price"
-                defaultValue={product.price}
-              />
-            </div>
-            {productSizes.map((p: ProductSize) => (
-              <div key={p.id} className="productSize">
+              {productTypes.map((p: ProductType) => (
+                <option key={p.id} value={p.id}>
+                  {p.name}
+                </option>
+              ))}
+            </select>
+            <div className="productSizes">
+              <h5>Tamanhos: </h5>
+              <div key="no-size" className="productSize">
                 <input
-                  disabled={!showSizes}
-                  onChange={() => handleProductSizeChange(p.id)}
-                  checked={p.checked}
+                  onChange={() => handleNoSizeProduct()}
+                  checked={!showSizes}
                   type="checkbox"
-                  id={p.id}
+                  id="no-product"
                 />
-                <label htmlFor={p.id}>
-                  {p.value} {p.unit}
-                </label>
+                <label htmlFor="no-size">Sem tamanho</label>
                 <input
                   type="text"
-                  defaultValue={p.price}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    handleProductPriceChange(
-                      p.id,
-                      parseFloat(e.currentTarget.value),
-                    )
+                    handleNoSizeProductPrice(parseFloat(e.currentTarget.value))
                   }
-                  className={`price ${
-                    p.checked && showSizes ? 'displayPrice' : ''
-                  }`}
+                  className={`price ${!showSizes ? 'displayPrice' : ''}`}
                   placeholder="Preço"
                   id="price"
+                  defaultValue={product.price}
                 />
               </div>
-            ))}
-          </div>
-          <div className="productAvailability">
-            <h5>Disponibilidade: </h5>
-            <div key="isAvailable" className="availabilityOption">
-              <input
-                onChange={() =>
-                  handleProductChange('isAvailable', !product.isAvailable)
-                }
-                checked={product.isAvailable}
-                type="checkbox"
-              />
-              <label htmlFor="isAailable">Disponível</label>
+              {productSizes.map((p: ProductSize) => (
+                <div key={p.id} className="productSize">
+                  <input
+                    disabled={!showSizes}
+                    onChange={() => handleProductSizeChange(p.id)}
+                    checked={p.checked}
+                    type="checkbox"
+                    id={p.id}
+                  />
+                  <label htmlFor={p.id}>
+                    {p.value} {p.unit}
+                  </label>
+                  <input
+                    type="text"
+                    defaultValue={p.price}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                      handleProductPriceChange(
+                        p.id,
+                        parseFloat(e.currentTarget.value),
+                      )
+                    }
+                    className={`price ${
+                      p.checked && showSizes ? 'displayPrice' : ''
+                    }`}
+                    placeholder="Preço"
+                    id="price"
+                  />
+                </div>
+              ))}
             </div>
-          </div>
-          <div className="actionButtons">
-            <button
-              onClick={submitForm}
-              type="button"
-              className={!onEditMode ? '' : 'buttonDisabled'}
-            >
-              Cadastrar
-            </button>
-            <button
-              className={onEditMode ? '' : 'buttonDisabled'}
-              onClick={() => {
-                deleteProduct(product.id ? product.id : '');
-              }}
-              type="button"
-            >
-              Deletar
-            </button>
-            <button
-              className={onEditMode ? '' : 'buttonDisabled'}
-              onClick={() => {
-                updateProduct();
-              }}
-              type="button"
-            >
-              Editar
-            </button>
-          </div>
-        </form>
-      </GenericModal>
-    </div>
+            <div className="productAvailability">
+              <h5>Disponibilidade: </h5>
+              <div key="isAvailable" className="availabilityOption">
+                <input
+                  onChange={() =>
+                    handleProductChange('isAvailable', !product.isAvailable)
+                  }
+                  checked={product.isAvailable}
+                  type="checkbox"
+                />
+                <label htmlFor="isAailable">Disponível</label>
+              </div>
+            </div>
+            <div className="actionButtons">
+              <button
+                onClick={submitForm}
+                type="button"
+                className={!onEditMode ? '' : 'buttonDisabled'}
+              >
+                Cadastrar
+              </button>
+              <button
+                className={onEditMode ? '' : 'buttonDisabled'}
+                onClick={() => {
+                  deleteProduct(product.id ? product.id : '');
+                }}
+                type="button"
+              >
+                Deletar
+              </button>
+              <button
+                className={onEditMode ? '' : 'buttonDisabled'}
+                onClick={() => {
+                  updateProduct();
+                }}
+                type="button"
+              >
+                Editar
+              </button>
+            </div>
+          </form>
+        </GenericModal>
+      </div>
+    </>
   );
 };
 
