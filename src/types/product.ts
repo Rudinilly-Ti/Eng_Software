@@ -3,12 +3,24 @@ export type Category = {
   name: string;
 };
 
+export type Size = {
+  id: string;
+  price: number;
+  productSize: {
+    id: string;
+    unit: string;
+    value: string;
+  };
+}
+
 export type Product = {
   id: number;
   name: string;
-  category: Category;
+  productType: Category;
   description: string;
-  available: boolean;
+  isAvailable: boolean;
+  sizes: Size[];
+  size: string;
   price: number;
   img_url: string;
 };

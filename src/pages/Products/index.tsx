@@ -5,8 +5,9 @@ import React, { useState, useEffect } from 'react';
 import Cart from '../../components/Cart';
 import GenericModal from '../../components/GenericModal';
 import ProductCard from '../../components/ProductCard';
-import { Category, Product } from '../../types/product';
+import { Product } from '../../types/product';
 import './styles.scss';
+import api from '../../services/api';
 
 type Props = {
   product: Product;
@@ -14,23 +15,8 @@ type Props = {
   size: string;
 };
 
-const Category1: Category = {
-  id: 1,
-  name: 'category1',
-};
-
-const Product1: Product = {
-  available: true,
-  category: Category1,
-  description: 'some Description',
-  id: 1,
-  img_url:
-    'https://s3-sa-east-1.amazonaws.com/deliveryon-uploads/products/manjerona/56_5c59df21e94c7.jpg',
-  name: 'Product 1',
-  price: 12.5,
-};
-
 const Products = () => {
+  const [products, setProducts] = useState<Product[]>([]);
   const [cart, setCart] = useState<Props[]>([]);
   const [openModal, setOpenModal] = useState(false);
   const [itemToAdd, setItemToAdd] = useState<Props | null>(null);
@@ -41,6 +27,16 @@ const Products = () => {
   };
 
   const handleCloseModal = () => {
+    const size = document.getElementsByName(
+      'size',
+    ) as NodeListOf<HTMLInputElement>;
+
+
+    for (let index = 0; index < size.length; index++) {
+      size[index].checked = false;
+
+    }
+
     setOpenModal(false);
     setItemToAdd(null);
   };
@@ -69,6 +65,16 @@ const Products = () => {
         checked = true;
       }
     });
+
+    const sizeExists = product.product.sizes.find(tamanho => tamanho.productSize.value === product.size)?.productSize.id
+    const price = product.product.sizes.find(tamanho => tamanho.productSize.value === product.size)?.price;
+
+    if (price && sizeExists) {
+      product.product.price = price;
+      product.product.size = sizeExists;
+      setItemToAdd({ ...itemToAdd as Props, product: { ...product.product, size: sizeExists, price } })
+    }
+
 
     const productExists = cart.some(
       (item) =>
@@ -142,9 +148,29 @@ const Products = () => {
     setCart([]);
   };
 
+  const handleGetProducts = async () => {
+    await api
+      .get('/products/')
+      .then((response) => {
+        setProducts(response.data);
+      })
+      .catch((error) => {
+        throw error;
+      });
+  };
+
+  const handleDisableInput = (type: string): boolean => {
+    const disable = itemToAdd?.product.sizes.some(size =>
+      size.productSize.value === type
+    )
+
+    return !disable;
+  }
+
+
   useEffect(() => {
-    console.log(cart);
-  }, [cart]);
+    handleGetProducts();
+  }, []);
 
   return (
     <>
@@ -159,79 +185,29 @@ const Products = () => {
           <h1>Pizzas</h1>
           <hr />
           <div className="items">
-            <ProductCard
-              product={Product1}
-              addProduct={() => handleOpenModal(Product1)}
-              key={1}
-            />
-            <ProductCard
-              product={Product1}
-              addProduct={() => handleOpenModal(Product1)}
-              key={1}
-            />
-            <ProductCard
-              product={Product1}
-              addProduct={() => handleOpenModal(Product1)}
-              key={1}
-            />
-            <ProductCard
-              product={Product1}
-              addProduct={() => handleOpenModal(Product1)}
-              key={1}
-            />
+            {products.map((product: Product) => (
+              <>
+                {product.isAvailable &&
+                  product.productType.name === 'Pizzas' ? (
+                  <ProductCard
+                    product={product}
+                    addProduct={() => handleOpenModal(product)}
+                    key={product.id}
+                  />
+                ) : null}
+              </>
+            ))}
           </div>
         </div>
         <div id="lanches" className="products-content">
           <h1>Lanches</h1>
           <hr />
-          <div className="items">
-            <ProductCard
-              product={Product1}
-              addProduct={() => handleOpenModal(Product1)}
-              key={1}
-            />
-            <ProductCard
-              product={Product1}
-              addProduct={() => handleOpenModal(Product1)}
-              key={1}
-            />
-            <ProductCard
-              product={Product1}
-              addProduct={() => handleOpenModal(Product1)}
-              key={1}
-            />
-            <ProductCard
-              product={Product1}
-              addProduct={() => handleOpenModal(Product1)}
-              key={1}
-            />
-          </div>
+          <div className="items" />
         </div>
         <div id="bebidas" className="products-content">
           <h1>Bebidas</h1>
           <hr />
-          <div className="items">
-            <ProductCard
-              product={Product1}
-              addProduct={() => handleOpenModal(Product1)}
-              key={1}
-            />
-            <ProductCard
-              product={Product1}
-              addProduct={() => handleOpenModal(Product1)}
-              key={1}
-            />
-            <ProductCard
-              product={Product1}
-              addProduct={() => handleOpenModal(Product1)}
-              key={1}
-            />
-            <ProductCard
-              product={Product1}
-              addProduct={() => handleOpenModal(Product1)}
-              key={1}
-            />
-          </div>
+          <div className="items" />
         </div>
       </div>
       <Cart
@@ -248,16 +224,16 @@ const Products = () => {
         <div className="add-item-modal-content">
           <div className="add-item-size">
             <label htmlFor="P">
-              <input type="radio" name="size" id="P" value="P" />P
+              <input type="radio" disabled={handleDisableInput('P')} name="size" id="P" value="P" />P
             </label>
             <label htmlFor="M">
-              <input type="radio" name="size" id="M" value="M" />M
+              <input type="radio" disabled={handleDisableInput('M')} name="size" id="M" value="M" />M
             </label>
             <label htmlFor="G">
-              <input type="radio" name="size" id="G" value="G" />G
+              <input type="radio" disabled={handleDisableInput('G')} name="size" id="G" value="G" />G
             </label>
             <label htmlFor="GG">
-              <input type="radio" name="size" id="GG" value="GG" />
+              <input type="radio" disabled={handleDisableInput('GG')} name="size" id="GG" value="GG" />
               GG
             </label>
           </div>

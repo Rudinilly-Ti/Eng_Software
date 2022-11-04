@@ -24,7 +24,9 @@
     "prettier"
   ],
   "rules": {
-    "prettier/prettier": "error",
+    "prettier/prettier": "off",
+    "react/jsx-no-useless-fragment": "off",
+    "no-plusplus": "off",
     "react-hooks/rules-of-hooks": "error",
     "react/jsx-no-bind": "off",
     "react/jsx-props-no-spreading": "off",

@@ -5,6 +5,7 @@ import GenericModal from '../GenericModal';
 import './styles.scss';
 import CartItem from './CartItem';
 import { Product } from '../../types/product';
+import api from '../../services/api';
 
 type Props = {
   product: Product;
@@ -27,7 +28,7 @@ type AddressProps = {
   bairro: string;
   rua: string;
   numero: string;
-  complemento: string;
+  observacao: string;
 };
 
 const Cart = ({ items, increment, decrement, clearCart }: CartProps) => {
@@ -43,7 +44,7 @@ const Cart = ({ items, increment, decrement, clearCart }: CartProps) => {
     bairro: '',
     rua: '',
     numero: '',
-    complemento: '',
+    observacao: '',
   });
 
   useEffect(() => {
@@ -75,10 +76,30 @@ const Cart = ({ items, increment, decrement, clearCart }: CartProps) => {
     setAddress({ ...address, [name]: value });
   };
 
-  const handleFinishOrder = (e: FormEvent) => {
+  const handleFinishOrder = async (e: FormEvent) => {
     e.preventDefault();
 
-    const addressData = { ...address, total, items: cartItems };
+    const payment = document.getElementsByName(
+      'payment',
+    ) as NodeListOf<HTMLInputElement>;
+
+    let paymentMethod = '';
+
+    payment.forEach((item) => {
+      if (item.checked) {
+        paymentMethod = item.value;
+      }
+    });
+
+    const itemsToAdd = cartItems.map((item) => {
+      return {
+        id: item.product.id,
+        quantity: item.quantidade,
+        productSizeId: item.product.size,
+      };
+    });
+
+    const addressData = { ...address, total, itemsToAdd, paymentMethod };
 
     if (
       addressData.nome &&
@@ -87,10 +108,25 @@ const Cart = ({ items, increment, decrement, clearCart }: CartProps) => {
       addressData.cep &&
       addressData.bairro &&
       addressData.rua &&
-      addressData.numero
+      addressData.numero &&
+      addressData.observacao &&
+      paymentMethod
     ) {
-      clearCart();
-      setOpenModal(false);
+      await api.post('/orders', {
+        paymentMethod: addressData.paymentMethod,
+        zipcode: addressData.cep,
+        cpf: addressData.cpf,
+        observation: addressData.observacao,
+        neighborhood: addressData.bairro,
+        houseNumber: addressData.numero,
+        streetName: addressData.rua,
+        clientPhoneNumber: addressData.phone,
+        clientName: addressData.nome,
+        products: addressData.itemsToAdd
+      }).then(() => {
+        clearCart();
+        setOpenModal(false);
+      });
     } else {
       // eslint-disable-next-line no-alert
       alert('Preencha todos os campos!');
@@ -219,15 +255,15 @@ const Cart = ({ items, increment, decrement, clearCart }: CartProps) => {
           <input
             type="text"
             onChange={handleAddressChange}
-            placeholder="Complemento"
-            name="complemento"
+            placeholder="Observaçao"
+            name="observacao"
           />
 
           <div className="finish-order-payment">
             <h4>Forma de Pagamento</h4>
             <div className="finish-order-payment-methods">
               <div className="finish-order-payment-method">
-                <input type="radio" name="payment" id="pix" value="PIX" />
+                <input type="radio" name="payment" id="pix" value="pix" />
                 <label htmlFor="pix">Pix</label>
               </div>
               <div className="finish-order-payment-method">
