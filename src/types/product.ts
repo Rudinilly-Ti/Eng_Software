@@ -42,5 +42,5 @@ export type Product = {
   productTypeId: string;
   productType?: ProductType;
   sizes: ProductSizeElement[] | undefined;
-  size: string;
+  size?: string;
 };

@@ -54,7 +54,8 @@ const Cart = ({ items, increment, decrement, clearCart }: CartProps) => {
   useEffect(() => {
     let price = 0;
     cartItems.forEach((item) => {
-      price += item.product.price * item.quantidade;
+      if (item.product.price )
+        price += item.product.price * item.quantidade;
     });
     setTotal(price);
   }, [cartItems]);

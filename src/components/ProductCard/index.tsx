@@ -3,11 +3,12 @@ import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
 import React from 'react';
 import { Product } from '../../types/product';
 import './styles.scss';
+import api from '../../services/api';
 
 type Props = {
   product: Product;
   className?: string;
-  addProduct: () => void;
+  addProduct?: () => void;
   click?(): void;
 };
 
@@ -22,7 +23,7 @@ const ProductCard = ({ product, className, addProduct, click }: Props) => {
     >
       <img
         className="product-image"
-        src={product.imageUrl}
+        src={`${api.defaults.baseURL}/${product.imageUrl}`}
         alt={product.name}
       />
       <div className="product-details">
@@ -48,6 +49,7 @@ const ProductCard = ({ product, className, addProduct, click }: Props) => {
 ProductCard.defaultProps = {
   className: '',
   click: null,
+  addProduct: null,
 };
 
 export default ProductCard;

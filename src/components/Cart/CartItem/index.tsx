@@ -37,7 +37,7 @@ const CartItem = ({ item, increment, decrement }: Props) => {
         </button>
       </td>
       <td>{`${item.product.name} (${item.size})`}</td>
-      <td> R$ {(item.product.price * item.quantidade).toFixed(2)}</td>
+      <td> R$ {((item.product.price ? item.product.price : 0) * item.quantidade).toFixed(2)}</td>
     </tr>
   );
 };

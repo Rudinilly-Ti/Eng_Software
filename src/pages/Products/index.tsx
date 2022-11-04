@@ -8,6 +8,7 @@ import ProductCard from '../../components/ProductCard';
 import { Product } from '../../types/product';
 import './styles.scss';
 import api from '../../services/api';
+import Alert from '../../components/Alert';
 
 type Props = {
   product: Product;
@@ -20,6 +21,12 @@ const Products = () => {
   const [cart, setCart] = useState<Props[]>([]);
   const [openModal, setOpenModal] = useState(false);
   const [itemToAdd, setItemToAdd] = useState<Props | null>(null);
+  const [alertJSON, setAlertJSON] = useState({
+    primaryColor: '',
+    secondaryColor: '',
+    msg: '',
+    className: '',
+  });
 
   const handleOpenModal = (product: Product) => {
     setItemToAdd({ product, quantidade: 1, size: '' });
@@ -66,8 +73,9 @@ const Products = () => {
       }
     });
 
-    const sizeExists = product.product.sizes.find(tamanho => tamanho.productSize.value === product.size)?.productSize.id
-    const price = product.product.sizes.find(tamanho => tamanho.productSize.value === product.size)?.price;
+    const expression = product.product.sizes?.find(tamanho => tamanho.productSize?.value === product.size);
+    const sizeExists = expression?.productSize?.id
+    const price = product.product.sizes?.find(tamanho => tamanho.productSize?.value === product.size)?.price;
 
     if (price && sizeExists) {
       product.product.price = price;
@@ -83,16 +91,57 @@ const Products = () => {
 
     if (!checked) {
       // eslint-disable-next-line no-alert
-      alert('Selecione um tamanho');
+      setTimeout(() => {
+        setAlertJSON({
+          primaryColor: '',
+          secondaryColor: '',
+          msg: '',
+          className: '',
+        });
+      }, 5000);
+      setAlertJSON({
+        primaryColor: '#BF2604',
+        secondaryColor: '#730202',
+        msg: 'Selecione um tamanho',
+        className: 'notice-card',
+      });
       return;
     }
 
     if (!productExists) {
       setCart([...cart, product]);
       handleCloseModal();
+      setTimeout(() => {
+        setAlertJSON({
+          primaryColor: '',
+          secondaryColor: '',
+          msg: '',
+          className: '',
+        });
+      }, 5000);
+      setAlertJSON({
+        primaryColor: '#68a373',
+        secondaryColor: '#39593f',
+        msg: 'Produto adicionado com sucesso',
+        className: 'notice-card',
+      });
     } else {
       // eslint-disable-next-line no-alert
-      alert('Produto já adicionado ao carrinho');
+      setTimeout(() => {
+        setAlertJSON({
+          primaryColor: '',
+          secondaryColor: '',
+          msg: '',
+          className: '',
+        });
+      }, 5000);
+      setAlertJSON({
+        primaryColor: '#BF2604',
+        secondaryColor: '#730202',
+        msg: 'Produto já adicionado no carrinho',
+        className: 'notice-card',
+      });
+      handleCloseModal();
     }
   };
 
@@ -160,8 +209,8 @@ const Products = () => {
   };
 
   const handleDisableInput = (type: string): boolean => {
-    const disable = itemToAdd?.product.sizes.some(size =>
-      size.productSize.value === type
+    const disable = itemToAdd?.product.sizes?.some(size =>
+      size.productSize?.value === type
     )
 
     return !disable;
@@ -174,6 +223,12 @@ const Products = () => {
 
   return (
     <>
+      <Alert
+        notice={alertJSON.msg}
+        cardColor={alertJSON.primaryColor}
+        timeBarColor={alertJSON.secondaryColor}
+        className={alertJSON.className}
+      />
       <div className="products-container">
         <div className="products-links">
           <a href="#pizzas">Pizzas</a>
@@ -188,7 +243,7 @@ const Products = () => {
             {products.map((product: Product) => (
               <>
                 {product.isAvailable &&
-                  product.productType.name === 'Pizzas' ? (
+                  product.productType?.name === 'Pizzas' ? (
                   <ProductCard
                     product={product}
                     addProduct={() => handleOpenModal(product)}
