@@ -40,8 +40,8 @@ const DeleteButton = ({ category, fetchCategories, setMessage }: Props) => {
             });
           }, 5000);
           setMessage({
-            primaryColor: '#BF2604',
-            secondaryColor: '#730202',
+            primaryColor: '#77AD78',
+            secondaryColor: '#557257',
             msg: 'Sucesso ao deletar categoria',
             className: 'notice-card',
           });
@@ -58,8 +58,8 @@ const DeleteButton = ({ category, fetchCategories, setMessage }: Props) => {
           });
         }, 5000);
         return setMessage({
-          primaryColor: '#BF2604',
-          secondaryColor: '#730202',
+          primaryColor: '#77AD78',
+            secondaryColor: '#557257',
           msg: 'Erro ao deletar categoria',
           className: 'notice-card',
         });
