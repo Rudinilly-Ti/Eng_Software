@@ -36,8 +36,8 @@ const CartItem = ({ item, increment, decrement }: Props) => {
           <FontAwesomeIcon icon={solid('plus')} />
         </button>
       </td>
-      <td>{`${item.product.name} (${item.size})`}</td>
-      <td> R$ {((item.product.price ? item.product.price : 0) * item.quantidade).toFixed(2)}</td>
+      <td>{item.product.name} {item.size ? `(${item.size})` : ''}</td>
+      <td> R$ {((item.product.price ? item.product.price / 100 : 0) * item.quantidade).toFixed(2)}</td>
     </tr>
   );
 };

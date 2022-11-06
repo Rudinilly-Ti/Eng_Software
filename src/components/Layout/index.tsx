@@ -31,7 +31,7 @@ const Layout = ({ user }: Props) => {
   if (mobile) {
     return (
       <div className="layout-container-mobile">
-        <NavBar />
+        <NavBar user={user} />
         <div className="layout-content-mobile">
           <Outlet />
         </div>

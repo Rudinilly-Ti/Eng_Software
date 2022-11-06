@@ -1,6 +1,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
 import React, { useState, useEffect, FormEvent } from 'react';
+import { cepMask, cpfMask, phoneMask } from '../../services/masks.js';
 import GenericModal from '../GenericModal';
 import './styles.scss';
 import CartItem from './CartItem';
@@ -54,7 +55,7 @@ const Cart = ({ items, increment, decrement, clearCart }: CartProps) => {
   useEffect(() => {
     let price = 0;
     cartItems.forEach((item) => {
-      if (item.product.price )
+      if (item.product.price)
         price += item.product.price * item.quantidade;
     });
     setTotal(price);
@@ -74,7 +75,20 @@ const Cart = ({ items, increment, decrement, clearCart }: CartProps) => {
 
   const handleAddressChange = (e: FormEvent) => {
     const { name, value } = e.target as HTMLInputElement;
-    setAddress({ ...address, [name]: value });
+
+    if (name === 'cpf') {
+      setAddress({ ...address, [name]: cpfMask(value) });
+
+    } else if (name === 'phone') {
+      setAddress({ ...address, [name]: phoneMask(value) });
+    } else if (name === 'cep') {
+      setAddress({ ...address, [name]: cepMask(value) });
+    }
+    else {
+      setAddress({ ...address, [name]: value });
+    }
+
+
   };
 
   const handleFinishOrder = async (e: FormEvent) => {
@@ -110,7 +124,6 @@ const Cart = ({ items, increment, decrement, clearCart }: CartProps) => {
       addressData.bairro &&
       addressData.rua &&
       addressData.numero &&
-      addressData.observacao &&
       paymentMethod
     ) {
       await api.post('/orders', {
@@ -147,9 +160,9 @@ const Cart = ({ items, increment, decrement, clearCart }: CartProps) => {
       >
         <span className="cart-icon">
           {open ? (
-            <FontAwesomeIcon icon={solid('close')} />
+            <FontAwesomeIcon icon={solid('close')} size='2x' />
           ) : (
-            <FontAwesomeIcon icon={solid('basket-shopping')} />
+            <FontAwesomeIcon icon={solid('basket-shopping')} size="2x" />
           )}{' '}
         </span>
       </button>
@@ -185,7 +198,7 @@ const Cart = ({ items, increment, decrement, clearCart }: CartProps) => {
                 <tr>
                   <td>Total</td>
                   <td />
-                  <td>R$ {total.toFixed(2)}</td>
+                  <td>R$ {(total / 100).toFixed(2)}</td>
                 </tr>
               </tfoot>
             </table>
@@ -221,18 +234,23 @@ const Cart = ({ items, increment, decrement, clearCart }: CartProps) => {
             type="text"
             onChange={handleAddressChange}
             placeholder="CPF"
+            value={address.cpf}
             name="cpf"
           />
           <input
             type="text"
             onChange={handleAddressChange}
             placeholder="Telefone"
+            value={address.phone}
+            maxLength={15}
             name="phone"
           />
           <input
             type="text"
             onChange={handleAddressChange}
             placeholder="CEP"
+            value={address.cep}
+            maxLength={9}
             name="cep"
           />
           <input

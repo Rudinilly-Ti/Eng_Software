@@ -73,16 +73,19 @@ const Products = () => {
       }
     });
 
-    const expression = product.product.sizes?.find(tamanho => tamanho.productSize?.value === product.size);
-    const sizeExists = expression?.productSize?.id
-    const price = product.product.sizes?.find(tamanho => tamanho.productSize?.value === product.size)?.price;
+    if (!product.product.price) {
+      const expression = product.product.sizes?.find(tamanho => tamanho.productSize?.value === product.size);
+      const sizeExists = expression?.productSize?.id
+      const price = expression?.price;
 
-    if (price && sizeExists) {
-      product.product.price = price;
-      product.product.size = sizeExists;
-      setItemToAdd({ ...itemToAdd as Props, product: { ...product.product, size: sizeExists, price } })
+      if (price && sizeExists) {
+        product.product.price = price;
+        product.product.size = sizeExists;
+        setItemToAdd({ ...itemToAdd as Props, product: { ...product.product, size: sizeExists, price } })
+      }
+    } else {
+      checked = true;
     }
-
 
     const productExists = cart.some(
       (item) =>
@@ -90,7 +93,6 @@ const Products = () => {
     );
 
     if (!checked) {
-      // eslint-disable-next-line no-alert
       setTimeout(() => {
         setAlertJSON({
           primaryColor: '',
@@ -126,7 +128,6 @@ const Products = () => {
         className: 'notice-card',
       });
     } else {
-      // eslint-disable-next-line no-alert
       setTimeout(() => {
         setAlertJSON({
           primaryColor: '',
