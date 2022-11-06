@@ -19,6 +19,7 @@ type CartProps = {
   increment: (product: Props) => void;
   decrement: (product: Props) => void;
   clearCart: () => void;
+  changeMessage(msg: any): void;
 };
 
 type AddressProps = {
@@ -32,7 +33,7 @@ type AddressProps = {
   observacao: string;
 };
 
-const Cart = ({ items, increment, decrement, clearCart }: CartProps) => {
+const Cart = ({ items, increment, decrement, clearCart, changeMessage }: CartProps) => {
   const [open, setOpen] = useState(false);
   const [cartItems, setCartItems] = useState<Props[]>([]);
   const [total, setTotal] = useState(0);
@@ -140,10 +141,37 @@ const Cart = ({ items, increment, decrement, clearCart }: CartProps) => {
       }).then(() => {
         clearCart();
         setOpenModal(false);
+      }).catch(() => {
+        setTimeout(() => {
+          changeMessage({
+            primaryColor: '',
+            secondaryColor: '',
+            msg: '',
+            className: '',
+          });
+        }, 5000);
+        changeMessage({
+          primaryColor: '#BF2604',
+          secondaryColor: '#730202',
+          msg: 'Compra mal sucedida, confira seus dados e tente de novo.',
+          className: 'notice-card',
+        });
       });
     } else {
-      // eslint-disable-next-line no-alert
-      alert('Preencha todos os campos!');
+      setTimeout(() => {
+        changeMessage({
+          primaryColor: '',
+          secondaryColor: '',
+          msg: '',
+          className: '',
+        });
+      }, 5000);
+      changeMessage({
+        primaryColor: '#BF2604',
+        secondaryColor: '#730202',
+        msg: 'Preencha todos os dados',
+        className: 'notice-card',
+      });
     }
   };
 

@@ -21,15 +21,15 @@ const Login = () => {
     e.preventDefault();
 
     const data = {
-      username,
+      login: username,
       password,
     };
 
     await api
-      .post('/authenticate', data)
+      .post('/user-manager/login', data)
       .then((response) => {
-        login(response.data.access_token);
-        navigate('/');
+        login(response.data.token);
+        navigate('/products');
       })
       .catch(() => {
         setTimeout(() => {
@@ -61,7 +61,7 @@ const Login = () => {
           <h1 className="project-logo">δ</h1>
           <form action="/" onSubmit={handleLogin}>
             <input
-              type="email"
+              type="text"
               className="email-input"
               placeholder="E-mail"
               onChange={(e) => setUsername(e.target.value)}

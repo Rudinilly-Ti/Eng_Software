@@ -25,7 +25,6 @@ const CategoryTable = () => {
       .get('/product-types')
       .then((response) => {
         setCategories(response.data);
-        console.log(response.data);
       })
       .catch((error) => {
         throw error;

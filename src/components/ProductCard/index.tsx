@@ -4,7 +4,7 @@ import React from 'react';
 import api from '../../services/api';
 import { Product } from '../../types/product';
 import './styles.scss';
-import api from '../../services/api';
+import { isAuthenticated } from '../../services/auth';
 
 type Props = {
   product: Product;
@@ -33,14 +33,19 @@ const ProductCard = ({ product, className, addProduct, click }: Props) => {
           <div>
             <h5 className="name">{product.name}</h5>
             <p className="description">{product.description}</p>
-            <h5 className="price">{product.price}</h5>
+            <h5 className="price">{product.price ? `R$ ${product.price / 100}` : ''}</h5>
           </div>
-          <div className="product-details-button">
-            <button onClick={addProduct} type="button">
-              <FontAwesomeIcon icon={solid('plus')} />
-              Adicionar
-            </button>
-          </div>
+          {
+            !isAuthenticated() ?
+            <div className="product-details-button">
+              <button onClick={addProduct} type="button">
+                <FontAwesomeIcon icon={solid('plus')} />
+                Adicionar
+              </button>
+            </div>
+            :
+            ''
+          }
         </div>
       </div>
     </div>

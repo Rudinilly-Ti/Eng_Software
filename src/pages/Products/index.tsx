@@ -28,6 +28,10 @@ const Products = () => {
     className: '',
   });
 
+  const changeMessage = (msg: any) => {
+    setAlertJSON(msg);
+  };
+
   const handleOpenModal = (product: Product) => {
     setItemToAdd({ product, quantidade: 1, size: '' });
     setOpenModal(true);
@@ -267,6 +271,7 @@ const Products = () => {
         </div>
       </div>
       <Cart
+        changeMessage={changeMessage}
         items={cart}
         clearCart={handleClearCart}
         increment={handleIncrement}

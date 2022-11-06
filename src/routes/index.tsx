@@ -9,25 +9,26 @@ import Orders from '../pages/OrdersManagement';
 import Category from '../pages/Category';
 import { isAuthenticated } from '../services/auth';
 
-// const user = isAuthenticated();
-const user = true;
-
 const MyRoutes: React.FC = () => (
   <Routes>
-    <Route path="/" element={<Layout user={false} />}>
-      <Route path="products" element={<Products />} />
+    <Route path="/" element={<Layout user={isAuthenticated()} />}>
+      <Route
+        path="products"
+        element={isAuthenticated() ? <ProductManagement /> : <Products />}
+      />
       <Route path="tracking" element={<Tracking />} />
     </Route>
 
-    <Route path="/" element={<Layout user />}>
+    <Route path="/" element={<Layout user={isAuthenticated()} />}>
       <Route
         path="products"
-        element={user ? <ProductManagement /> : <Products />}
+        element={isAuthenticated() ? <ProductManagement /> : <Products />}
       />
-      <Route path="orders" element={user ? <Orders /> : <Login />} />
-      <Route path="categories" element={user ? <Category /> : null} />
+      <Route path="orders" element={isAuthenticated() ? <Orders /> : <Login />} />
+      <Route path="categories" element={isAuthenticated() ? <Category /> : null} />
       <Route path="tracking" element={<Tracking />} />
     </Route>
+
     <Route path="/login" element={<Login />} />
     <Route path="*" element={<Navigate to="/login" replace />} />
   </Routes>
