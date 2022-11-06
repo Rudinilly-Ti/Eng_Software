@@ -1,3 +1,18 @@
+export type Category = {
+  id: number;
+  name: string;
+};
+
+export type Size = {
+  id: string;
+  price: number;
+  productSize: {
+    id: string;
+    unit: string;
+    value: string;
+  };
+}
+
 export type ProductSize = {
   id: string;
   unit: string;
@@ -27,4 +42,5 @@ export type Product = {
   productTypeId: string;
   productType?: ProductType;
   sizes: ProductSizeElement[] | undefined;
+  size?: string;
 };

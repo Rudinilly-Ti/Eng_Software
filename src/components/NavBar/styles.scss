@@ -102,8 +102,17 @@
   height: 100vh;
   z-index: 4;
   position: fixed;
+  top: 0;
+  left: 0;
   background-color: $black;
   opacity: 0.3;
+}
+
+.navbar-button-cover {
+  display: flex;
+  width: 0px;
+  height: 0px;
+  z-index: 4;
 }
 
 .navbar-cover-closed {

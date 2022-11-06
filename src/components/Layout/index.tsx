@@ -13,16 +13,16 @@ const Layout = ({ user }: Props) => {
   const [mobile, setMobile] = useState<boolean>(true);
 
   useEffect(() => {
-    if (window.innerWidth < 700) {
+    if (window.innerWidth < 768) {
       setMobile(true);
-    } else if (window.innerWidth > 700) {
+    } else if (window.innerWidth > 768) {
       setMobile(false);
     }
 
     window.onresize = () => {
-      if (window.innerWidth < 700 && mobile === false) {
+      if (window.innerWidth < 768 && mobile === false) {
         setMobile(true);
-      } else if (window.innerWidth > 700 && mobile === true) {
+      } else if (window.innerWidth > 768 && mobile === true) {
         setMobile(false);
       }
     };
@@ -31,7 +31,7 @@ const Layout = ({ user }: Props) => {
   if (mobile) {
     return (
       <div className="layout-container-mobile">
-        <NavBar />
+        <NavBar user={user} />
         <div className="layout-content-mobile">
           <Outlet />
         </div>

@@ -1,15 +1,19 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
 import React from 'react';
 import api from '../../services/api';
 import { Product } from '../../types/product';
 import './styles.scss';
+import api from '../../services/api';
 
 type Props = {
   product: Product;
   className?: string;
+  addProduct?: () => void;
   click?(): void;
 };
 
-const ProductCard = ({ product, className, click }: Props) => {
+const ProductCard = ({ product, className, addProduct, click }: Props) => {
   return (
     <div
       className={`product-card ${className}`}
@@ -26,11 +30,17 @@ const ProductCard = ({ product, className, click }: Props) => {
       <div className="product-details">
         <div className="product-details-bg" />
         <div className="product-details-info">
-          <h5 className="name">{product.name}</h5>
-          <p className="description">{product.description}</p>
-          <h5 className="price">
-            {product.price ? `R$ ${product.price / 100}` : ''}
-          </h5>
+          <div>
+            <h5 className="name">{product.name}</h5>
+            <p className="description">{product.description}</p>
+            <h5 className="price">{product.price}</h5>
+          </div>
+          <div className="product-details-button">
+            <button onClick={addProduct} type="button">
+              <FontAwesomeIcon icon={solid('plus')} />
+              Adicionar
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -40,6 +50,7 @@ const ProductCard = ({ product, className, click }: Props) => {
 ProductCard.defaultProps = {
   className: '',
   click: null,
+  addProduct: null,
 };
 
 export default ProductCard;

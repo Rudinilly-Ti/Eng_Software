@@ -1,3 +1,7 @@
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   margin: 0;
   font-family: 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
@@ -16,17 +20,17 @@ a {
 }
 
 h1 {
-    font-size: 38px;
+  font-size: 38px;
 }
 
 h2 {
-    font-size: 36px;
+  font-size: 36px;
 }
 
 h3 {
-    font-size: 32px;
+  font-size: 32px;
 }
 
 h4 {
-    font-size: 24px;
+  font-size: 24px;
 }
