@@ -44,6 +44,7 @@ const ProductManagement = () => {
     setShowCreateModal(false);
     setOnEditMode(false);
     setProduct(emptyProduct);
+    setShowSizes(true);
 
     const newProductSizes: ProductSize[] = productSizes.map((p) => {
       return { ...p, checked: false };
