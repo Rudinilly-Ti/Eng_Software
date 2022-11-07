@@ -16,7 +16,13 @@ type Props = {
   size: string;
 };
 
+type ShopOpenProps = {
+  id: number;
+  status: boolean;
+}
+
 const Products = () => {
+  const [shopOpen, setShopOpen] = useState<ShopOpenProps>();
   const [products, setProducts] = useState<Product[]>([]);
   const [cart, setCart] = useState<Props[]>([]);
   const [openModal, setOpenModal] = useState(false);
@@ -223,6 +229,9 @@ const Products = () => {
 
 
   useEffect(() => {
+    api.get('/store-status').then((response) => {
+      setShopOpen(response.data);
+    });
     handleGetProducts();
   }, []);
 
@@ -235,40 +244,47 @@ const Products = () => {
         className={alertJSON.className}
       />
       <div className="products-container">
-        <div className="products-links">
-          <a href="#pizzas">Pizzas</a>
-          <a href="#lanches">Lanches</a>
-          <a href="#bebidas">Bebidas</a>
-        </div>
-
-        <div id="pizzas" className="products-content">
-          <h1>Pizzas</h1>
-          <hr />
-          <div className="items">
-            {products.map((product: Product) => (
-              <>
-                {product.isAvailable &&
-                  product.productType?.name === 'Pizzas' ? (
-                  <ProductCard
-                    product={product}
-                    addProduct={() => handleOpenModal(product)}
-                    key={product.id}
-                  />
-                ) : null}
-              </>
-            ))}
+        {!shopOpen?.status ? (
+          <>
+            <div className="products-links">
+              <a href="#pizzas">Pizzas</a>
+              <a href="#lanches">Lanches</a>
+              <a href="#bebidas">Bebidas</a>
+            </div>
+            <div id="pizzas" className="products-content">
+              <h1>Pizzas</h1>
+              <hr />
+              <div className="items">
+                {products.map((product: Product) => (
+                  <>
+                    {product.isAvailable &&
+                      product.productType?.name === 'Pizzas' ? (
+                      <ProductCard
+                        product={product}
+                        addProduct={() => handleOpenModal(product)}
+                        key={product.id}
+                      />
+                    ) : null}
+                  </>
+                ))}
+              </div>
+            </div>
+            <div id="lanches" className="products-content">
+              <h1>Lanches</h1>
+              <hr />
+              <div className="items" />
+            </div>
+            <div id="bebidas" className="products-content">
+              <h1>Bebidas</h1>
+              <hr />
+              <div className="items" />
+            </div>
+          </>
+        ) : (
+          <div style={{ display: 'flex', width: 300, height: '100%', alignItems: 'center', justifyContent: 'center' }}>
+            <h1>Loja Fechada</h1>
           </div>
-        </div>
-        <div id="lanches" className="products-content">
-          <h1>Lanches</h1>
-          <hr />
-          <div className="items" />
-        </div>
-        <div id="bebidas" className="products-content">
-          <h1>Bebidas</h1>
-          <hr />
-          <div className="items" />
-        </div>
+        )}
       </div>
       <Cart
         changeMessage={changeMessage}

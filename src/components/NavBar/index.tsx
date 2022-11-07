@@ -26,7 +26,7 @@ const NavBar = ({ user }: Props) => {
     } else if (location.pathname === '/balance' && user) {
       setActive(true);
       setActive2(false);
-    } else if (location.pathname === '/products' && user) {
+    } else if (location.pathname === '/' && user) {
       setActive(false);
       setActive2(true);
     } else if (location.pathname === '/categories' && user) {
@@ -89,7 +89,7 @@ const NavBar = ({ user }: Props) => {
 
             <li className={!active && active2 ? 'navbar-active' : ''}>
               <button
-                onClick={() => handleActive(false, true, '/products')}
+                onClick={() => handleActive(false, true, '/')}
                 type="button"
               >
                 <h4>Produtos</h4>
@@ -110,7 +110,7 @@ const NavBar = ({ user }: Props) => {
             <li className={active ? 'navbar-active' : ''}>
               <button
                 type="button"
-                onClick={() => (active ? {} : handleActive(true, false, '/products'))}
+                onClick={() => (active ? {} : handleActive(true, false, '/'))}
               >
                 Produtos
               </button>
