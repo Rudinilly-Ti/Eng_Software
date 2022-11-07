@@ -6,11 +6,12 @@ import React, {
   SetStateAction,
   Dispatch,
   useEffect,
+  useContext,
 } from 'react';
 import { useNavigate, To, useLocation } from 'react-router-dom';
 import logo from '../../assets/logo.png';
 import './styles.scss';
-import { logout } from '../../services/auth';
+import AuthContext from '../../services/auth';
 
 type Props = {
   user: boolean;
@@ -19,6 +20,7 @@ type Props = {
 };
 
 const SideBar = ({ user, resized, setResized }: Props) => {
+  const context = useContext(AuthContext);
   const [active, setActive] = useState<boolean>(true);
   const [active2, setActive2] = useState<boolean>(true);
 
@@ -74,36 +76,23 @@ const SideBar = ({ user, resized, setResized }: Props) => {
           <ul className="sidebar-list">
             <li className={active && active2 ? 'sidebar-active' : ''}>
               <button
-                onClick={() => handleActive(true, true, '/orders')}
+                onClick={() => handleActive(true, true, '/products')}
                 type="button"
               >
                 {!resized ? (
-                  <h4>Pedidos</h4>
+                  <h4>Produtos</h4>
                 ) : (
                   <FontAwesomeIcon icon={solid('truck')} size="lg" />
                 )}
               </button>
             </li>
-            <li className={active && !active2 ? 'sidebar-active' : ''}>
-              <button
-                onClick={() => handleActive(true, false, '/balance')}
-                type="button"
-              >
-                {!resized ? (
-                  <h4>Caixa</h4>
-                ) : (
-                  <FontAwesomeIcon icon={solid('cash-register')} size="lg" />
-                )}
-              </button>
-            </li>
-
             <li className={!active && active2 ? 'sidebar-active' : ''}>
               <button
-                onClick={() => handleActive(false, true, '/')}
+                onClick={() => handleActive(false, true, '/orders')}
                 type="button"
               >
                 {!resized ? (
-                  <h4>Produtos</h4>
+                  <h4>Pedidos</h4>
                 ) : (
                   <FontAwesomeIcon icon={solid('pizza-slice')} size="lg" />
                 )}
@@ -128,8 +117,8 @@ const SideBar = ({ user, resized, setResized }: Props) => {
           <button
             type="button"
             onClick={() => {
-              logout();
-              navigate('/');
+              context.logout();
+              navigate('/products');
             }}
           >
             <FontAwesomeIcon
@@ -165,7 +154,7 @@ const SideBar = ({ user, resized, setResized }: Props) => {
           <li className={active ? 'sidebar-active' : ''}>
             <button
               onClick={() =>
-                active ? {} : handleActive(true, false, '/')
+                active ? {} : handleActive(true, false, '/products')
               }
               type="button"
             >

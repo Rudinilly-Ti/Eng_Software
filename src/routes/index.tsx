@@ -1,4 +1,5 @@
-import React from 'react';
+/* eslint-disable react-hooks/rules-of-hooks */
+import React, { useContext } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import Layout from '../components/Layout';
 import Tracking from '../pages/Tracking';
@@ -7,31 +8,32 @@ import ProductManagement from '../pages/ProductManagement';
 import Login from '../pages/Login';
 import Orders from '../pages/OrdersManagement';
 import Category from '../pages/Category';
-import { isAuthenticated } from '../services/auth';
+import AuthContext, { isAuthenticated } from '../services/auth';
 
-const MyRoutes: React.FC = () => (
-  <Routes>
-    <Route path="/" element={<Layout user={isAuthenticated()} />}>
-      <Route
-        path="/"
-        element={isAuthenticated() ? <ProductManagement /> : <Products />}
-      />
-      <Route path="tracking" element={<Tracking />} />
-    </Route>
 
-    <Route path="/" element={<Layout user={isAuthenticated()} />}>
-      <Route
-        path="/"
-        element={isAuthenticated() ? <ProductManagement /> : <Products />}
-      />
-      <Route path="orders" element={isAuthenticated() ? <Orders /> : <Login />} />
-      <Route path="categories" element={isAuthenticated() ? <Category /> : null} />
-      <Route path="tracking" element={<Tracking />} />
-    </Route>
+const MyRoutes: React.FC = () => {
+  const { signed } = useContext(AuthContext);
 
-    <Route path="/login" element={<Login />} />
-    <Route path="*" element={<Navigate to="/login" replace />} />
-  </Routes>
-);
+  return (
+    <Routes>
+      <Route path="/" element={<Layout user={signed} />}>
+        <Route
+          path="/"
+          element={signed ? <ProductManagement /> : <Products />}
+        />
+        <Route
+          path="/products"
+          element={signed ? <ProductManagement /> : <Products />}
+        />
+        <Route path="orders" element={signed ? <Orders /> : <Login />} />
+        <Route path="categories" element={signed ? <Category /> : <Login/>} />
+        <Route path="tracking" element={<Tracking />} />
+      </Route>
+
+      <Route path="/login" element={<Login />} />
+      <Route path="*" element={<Navigate to="/login" replace />} />
+    </Routes>
+  );
+}
 
 export default MyRoutes;

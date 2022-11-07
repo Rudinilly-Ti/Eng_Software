@@ -1,11 +1,12 @@
-import React, { FormEvent, useState } from 'react';
+import React, { FormEvent, useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Alert from '../../components/Alert';
 import api from '../../services/api';
-import { login } from '../../services/auth';
+import AuthContext from '../../services/auth';
 import './styles.scss';
 
 const Login = () => {
+  const context = useContext(AuthContext);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [alertJSON, setAlertJSON] = useState({
@@ -28,7 +29,7 @@ const Login = () => {
     await api
       .post('/user-manager/login', data)
       .then((response) => {
-        login(response.data.token);
+        context.login(response.data.token);
         navigate('/products');
       })
       .catch(() => {
