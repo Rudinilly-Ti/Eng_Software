@@ -1,6 +1,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
 import React, { useState, useEffect, FormEvent } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { cepMask, cpfMask, phoneMask } from '../../services/masks.js';
 import GenericModal from '../GenericModal';
 import './styles.scss';
@@ -48,6 +49,8 @@ const Cart = ({ items, increment, decrement, clearCart, changeMessage }: CartPro
     numero: '',
     observacao: '',
   });
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     setCartItems(items);
@@ -138,9 +141,11 @@ const Cart = ({ items, increment, decrement, clearCart, changeMessage }: CartPro
         clientPhoneNumber: addressData.phone,
         clientName: addressData.nome,
         products: addressData.itemsToAdd
-      }).then(() => {
+      }).then((response) => {
         clearCart();
         setOpenModal(false);
+        localStorage.setItem('order', JSON.stringify(response.data));
+        navigate('/tracking');
       }).catch(() => {
         setTimeout(() => {
           changeMessage({

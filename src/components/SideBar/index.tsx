@@ -34,7 +34,7 @@ const SideBar = ({ user, resized, setResized }: Props) => {
     } else if (location.pathname === '/balance' && user) {
       setActive(true);
       setActive2(false);
-    } else if (location.pathname === '/products' && user) {
+    } else if (location.pathname === '/' && user) {
       setActive(false);
       setActive2(true);
     } else if (location.pathname === '/categories' && user) {
@@ -99,7 +99,7 @@ const SideBar = ({ user, resized, setResized }: Props) => {
 
             <li className={!active && active2 ? 'sidebar-active' : ''}>
               <button
-                onClick={() => handleActive(false, true, '/products')}
+                onClick={() => handleActive(false, true, '/')}
                 type="button"
               >
                 {!resized ? (
@@ -165,7 +165,7 @@ const SideBar = ({ user, resized, setResized }: Props) => {
           <li className={active ? 'sidebar-active' : ''}>
             <button
               onClick={() =>
-                active ? {} : handleActive(true, false, '/products')
+                active ? {} : handleActive(true, false, '/')
               }
               type="button"
             >

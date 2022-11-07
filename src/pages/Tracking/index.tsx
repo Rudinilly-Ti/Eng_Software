@@ -1,18 +1,39 @@
-import React, { useState } from 'react';
-
+import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
 import './styles.scss';
+import api from '../../services/api';
 
 const Tracking = () => {
-  const [tracking] = useState(true);
+  const [tracking, setTracking] = useState<any>();
+  const [search, setSearch] = useState<string>('');
+
+  useEffect(() => {
+    const order = JSON.parse(localStorage.getItem('order') || '{}');
+    api.get(`/orders/${order?.id}`)
+      .then((response) => {
+        setTracking(response.data);
+      });
+  }, []);
+
+  const handleChange = (e: any) => {
+    setSearch(e.target.value);
+  }
+
+  const handleSearch = () => {
+    api.get(`/orders/${search}`)
+      .then((response) => {
+        setTracking(response.data);
+      });
+  }
+
   return (
     <div className="tracking-container">
       <div className="tracking-heading">
         <h2>Buscar Pedido</h2>
         <span>
-          <input type="text" />
-          <button type="button">
+          <input type="text" onChange={handleChange} value={search} />
+          <button onClick={handleSearch} type="button">
             <FontAwesomeIcon icon={solid('search')} size="lg" color="#fff" />
           </button>
         </span>
@@ -25,15 +46,15 @@ const Tracking = () => {
             <div className="tracking-show">
               <div className="situation">
                 <span>Pedido Recebido</span>
-                <div className="active" />
+                <div className={tracking?.status === "PREPARING" || tracking?.status === "DELIVERY" || tracking?.status === "DONE" ? "active" : ''} />
               </div>
               <div className="situation">
                 <span>Em Preparo</span>
-                <div />
+                <div className={tracking?.status === "PREPARING" || tracking?.status === "DELIVERY" ? "active" : ''} />
               </div>
               <div className="situation">
                 <span>Saiu para entrega</span>
-                <div />
+                <div className={tracking?.status === "DELIVERY" ? "active" : ''} />
               </div>
             </div>
           </div>
@@ -50,11 +71,13 @@ const Tracking = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>1</td>
-                    <td>Pizza</td>
-                    <td>39,90</td>
-                  </tr>
+                  {tracking?.productsOrders.map((item: any) => (
+                    <tr key={item.id}>
+                      <td>{item.quantity}</td>
+                      <td>{item.product.name}</td>
+                      <td>R$ {(item.product.price / 100).toFixed(2)}</td>
+                    </tr>
+                  ))}
                 </tbody>
                 <tfoot>
                   <tr>
@@ -65,15 +88,16 @@ const Tracking = () => {
                   <tr>
                     <td>Total</td>
                     <td />
-                    <td>39,90</td>
+                    <td>R$ {(tracking.value / 100).toFixed(2)}</td>
                   </tr>
                 </tfoot>
               </table>
             </div>
           </div>
         </>
-      ) : null}
-    </div>
+      ) : null
+      }
+    </div >
   );
 };
 

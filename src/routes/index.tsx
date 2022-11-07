@@ -13,7 +13,7 @@ const MyRoutes: React.FC = () => (
   <Routes>
     <Route path="/" element={<Layout user={isAuthenticated()} />}>
       <Route
-        path="products"
+        path="/"
         element={isAuthenticated() ? <ProductManagement /> : <Products />}
       />
       <Route path="tracking" element={<Tracking />} />
@@ -21,7 +21,7 @@ const MyRoutes: React.FC = () => (
 
     <Route path="/" element={<Layout user={isAuthenticated()} />}>
       <Route
-        path="products"
+        path="/"
         element={isAuthenticated() ? <ProductManagement /> : <Products />}
       />
       <Route path="orders" element={isAuthenticated() ? <Orders /> : <Login />} />
