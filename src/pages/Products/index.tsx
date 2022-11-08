@@ -272,12 +272,38 @@ const Products = () => {
             <div id="lanches" className="products-content">
               <h1>Lanches</h1>
               <hr />
-              <div className="items" />
+              <div className="items" >
+                {products.map((product: Product) => (
+                  <>
+                    {product.isAvailable &&
+                      product.productType?.name === 'Lanches' ? (
+                      <ProductCard
+                        product={product}
+                        addProduct={() => handleOpenModal(product)}
+                        key={product.id}
+                      />
+                    ) : null}
+                  </>
+                ))}
+              </div>
             </div>
             <div id="bebidas" className="products-content">
               <h1>Bebidas</h1>
               <hr />
-              <div className="items" />
+              <div className="items">
+                {products.map((product: Product) => (
+                  <>
+                    {product.isAvailable &&
+                      product.productType?.name === 'Bebidas' ? (
+                      <ProductCard
+                        product={product}
+                        addProduct={() => handleOpenModal(product)}
+                        key={product.id}
+                      />
+                    ) : null}
+                  </>
+                ))}
+              </div>
             </div>
           </>
         ) : (
