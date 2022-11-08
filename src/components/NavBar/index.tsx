@@ -1,15 +1,18 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, useContext } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
 import { To, useNavigate, useLocation } from 'react-router-dom';
 import logo from '../../assets/logo.png';
 import './styles.scss';
+import AuthContext from '../../services/auth';
 
 type Props = {
   user: boolean;
 }
 
 const NavBar = ({ user }: Props) => {
+  const context = useContext(AuthContext);
+
   const [active, setActive] = useState(true);
   const [active2, setActive2] = useState(true);
   const [open, setOpen] = useState(false);
@@ -54,9 +57,10 @@ const NavBar = ({ user }: Props) => {
         >
           <FontAwesomeIcon icon={solid('bars')} size="2x" />
         </button>
-        <button className="navbar-button" type="button">
+        {user ? (<button className="navbar-button" type="button">
           <FontAwesomeIcon icon={solid('basket-shopping')} size="2x" />
-        </button>
+        </button>) : <div />}
+
       </div>
       <div className={open ? 'navbar-list' : 'navbar-list navbar-list-closed'}>
         <button
@@ -78,15 +82,6 @@ const NavBar = ({ user }: Props) => {
                 <h4>Pedidos</h4>
               </button>
             </li>
-            <li className={active && !active2 ? 'navbar-active' : ''}>
-              <button
-                onClick={() => handleActive(true, false, '/balance')}
-                type="button"
-              >
-                <h4>Caixa</h4>
-              </button>
-            </li>
-
             <li className={!active && active2 ? 'navbar-active' : ''}>
               <button
                 onClick={() => handleActive(false, true, '/')}
@@ -102,6 +97,22 @@ const NavBar = ({ user }: Props) => {
                 type="button"
               >
                 <h4>Categorias</h4>
+              </button>
+            </li>
+            <li>
+              <button
+                type="button"
+                onClick={() => {
+                  context.logout();
+                  navigate('/');
+                }}
+              >
+                <FontAwesomeIcon
+                  icon={solid('arrow-right-from-bracket')}
+                  size="2x"
+                />{' '}
+                <pre> </pre>
+                <h4>Sair</h4>
               </button>
             </li>
           </ul>
