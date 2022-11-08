@@ -364,7 +364,7 @@ const ProductManagement = () => {
   }
 
   async function updateProduct() {
-    const data = { ...product };
+    const data = { ...product, price: showSizes ? 0 : product.price };
     const formData = new FormData();
     if (productImageFile !== null) {
       const file = productImageFile.current?.files;

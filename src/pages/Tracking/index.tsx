@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
@@ -8,12 +9,21 @@ const Tracking = () => {
   const [tracking, setTracking] = useState<any>();
   const [search, setSearch] = useState<string>('');
 
-  useEffect(() => {
-    const order = JSON.parse(localStorage.getItem('order') || '{}');
+  const updateOrderDetails = (order: any) => {
     api.get(`/orders/${order?.id}`)
       .then((response) => {
         setTracking(response.data);
       });
+
+    setTimeout(() => {
+      updateOrderDetails(order);
+    }, 5000);
+  };
+
+  useEffect(() => {
+    const order = JSON.parse(localStorage.getItem('order') || '{}');
+    if (order)
+      updateOrderDetails(order);
   }, []);
 
   const handleChange = (e: any) => {
@@ -31,6 +41,7 @@ const Tracking = () => {
     <div className="tracking-container">
       <div className="tracking-heading">
         <h2>Buscar Pedido</h2>
+        <h3>{tracking ? `Pedido: ${tracking.id}` : ''}</h3>
         <span>
           <input type="text" onChange={handleChange} value={search} />
           <button onClick={handleSearch} type="button">
@@ -46,15 +57,15 @@ const Tracking = () => {
             <div className="tracking-show">
               <div className="situation">
                 <span>Pedido Recebido</span>
-                <div className={tracking?.status === "PREPARING" || tracking?.status === "DELIVERY" || tracking?.status === "DONE" ? "active" : ''} />
+                <div className={tracking?.status.status === "PREPARING" || tracking?.status.status === "DELIVERY" || tracking?.status.status === "DONE" ? "active" : ''} />
               </div>
               <div className="situation">
                 <span>Em Preparo</span>
-                <div className={tracking?.status === "PREPARING" || tracking?.status === "DELIVERY" ? "active" : ''} />
+                <div className={tracking?.status.status === "PREPARING" || tracking?.status.status === "DELIVERY" ? "active" : ''} />
               </div>
               <div className="situation">
                 <span>Saiu para entrega</span>
-                <div className={tracking?.status === "DELIVERY" ? "active" : ''} />
+                <div className={tracking?.status.status === "DELIVERY" ? "active" : ''} />
               </div>
             </div>
           </div>
