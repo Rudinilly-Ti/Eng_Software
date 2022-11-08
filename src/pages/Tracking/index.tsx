@@ -61,15 +61,15 @@ const Tracking = () => {
             <div className="tracking-show">
               <div className="situation">
                 <span>Pedido Recebido</span>
-                <div className={tracking?.status === "PREPARING" || tracking?.status === "DELIVERY" || tracking?.status === "DONE" ? "active" : ''} />
+                <div className={tracking?.status?.status === "PREPARING" || tracking?.status === "DELIVERY" || tracking?.status === "DONE" ? "active" : ''} />
               </div>
               <div className="situation">
                 <span>Em Preparo</span>
-                <div className={tracking?.status === "PREPARING" || tracking?.status === "DELIVERY" ? "active" : ''} />
+                <div className={tracking?.status?.status === "PREPARING" || tracking?.status === "DELIVERY" ? "active" : ''} />
               </div>
               <div className="situation">
                 <span>Saiu para entrega</span>
-                <div className={tracking?.status === "DELIVERY" ? "active" : ''} />
+                <div className={tracking?.status?.status === "DELIVERY" ? "active" : ''} />
               </div>
             </div>
           </div>
