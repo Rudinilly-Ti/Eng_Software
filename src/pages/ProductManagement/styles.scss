@@ -1,0 +1,142 @@
+.container-products {
+  max-width: 100%;
+  padding: 45px;
+  height: 100%;
+
+  @media (max-width: 425px) {
+    padding: 0px;
+  }
+
+  .page-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #2b2b2b;
+    margin-bottom: 60px;
+
+    @media (max-width: 425px) {
+      padding: 15px;
+    }
+  }
+
+  .products {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+
+    @media (max-width: 768px) {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .product {
+      float: left;
+      margin-bottom: 30px;
+      width: 0%;
+
+      @media (max-width: 768px) {
+        margin-bottom: 30px;
+        margin-right: 0;
+      }
+    }
+  }
+
+  .createProduct {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .previewProductImage {
+      max-width: 200px;
+      max-height: 160px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      margin-top: 10px;
+      box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+      transition: all ease-in-out .3s;
+
+      &:hover {
+        transform: scale(1.02);
+      }
+    }
+
+    .actionButtons {
+      width: 70%;
+      display: flex;
+      justify-content: space-around;
+      margin-bottom: 20px;
+    }
+
+    input:first-child {
+      padding: 3px;
+    }
+
+    input, select {
+      width: 100%;
+      margin: 10px 0px;
+      padding: 8px;
+      border: 1px solid #9c9c9c;
+      border-radius: 3px;
+    }
+
+    button {
+      margin-top: 20px;
+      margin-bottom: 10px;
+      width: max-content;
+      height: 30px;
+      padding: 8px;
+      border-radius: 8px;
+      color: white;
+      font-weight: bold;
+      background-color: #EE1515;
+      border: 0px;
+      cursor: pointer;
+      box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    }
+
+    .buttonDisabled {
+      display: none;
+    }
+
+    .productSizes, .productAvailability {
+      margin-top: 15px;
+      text-align: left;
+      width: 100%;
+
+      h5 {
+        margin-bottom: 10px;
+      }
+
+      input {
+        width: auto;
+        margin-right: 5px;
+        margin-bottom: 12px;
+      }
+
+      label {
+        font-size: 14px;
+      }
+
+      .productSize {
+        margin-right: 10px;
+      }
+
+      .price {
+        width: 0px;
+        padding: 0px;
+        border: 0px;
+        margin-left: 8px;
+        transition: all ease-in-out .2s;
+      }
+
+      .displayPrice {
+        width: 68px;
+        padding: 5px;
+        border: 1px solid #9c9c9c;
+      }
+    }
+  }
+}

@@ -1,0 +1,106 @@
+.open{
+    display: flex;
+    height: 100px;
+    float: center;
+    background-color: white;
+    align-items: center;
+    gap: 5px;
+    padding: 5px;
+
+    @media (max-width: 425px) {
+      margin-top: 20px;
+    }
+}
+
+.paragraph{
+    font-size: 32px;
+    padding-right: 30px;
+}
+
+#retangle{
+    width: 150px;
+    height: 78px;
+    border: 2px solid #2b2b2b;
+    border-radius: 60px;
+    display: flex;
+    align-items: center;
+    padding: 5px;
+    background-color: white;
+}
+
+.rectangle-animation {
+  animation: retangle 0.8s;
+  animation-fill-mode: forwards;
+}
+
+.ball-animation {
+  animation: ball 0.3s reverse;
+  animation-fill-mode: forwards;
+}
+
+.rectangle-animation-r {
+  animation: retangleReverse 0.8s;
+  animation-fill-mode: forwards;
+}
+
+.ball-animation-r {
+  animation: ballReverse 0.3s reverse;
+  animation-fill-mode: forwards;
+}
+
+.ball{
+    width: 60px;
+    height: 60px;
+    border-radius: 30px;
+    background-color: #Bf2604;
+    cursor: pointer;
+}
+
+.ball-r{
+  width: 60px;
+  height: 60px;
+  border-radius: 30px;
+  background-color: #Bf2604;
+  transform: translateX(75px);
+  cursor: pointer;
+}
+
+@keyframes ball {
+    from {
+      transform: translateX(75px);
+      background-color: white;
+    }
+    to {
+      transform: translateX(0);
+      background-color: #Bf2604;
+    }
+}
+
+@keyframes retangle {
+    from {      
+      background-color:  white;
+    }
+    to {     
+      background-color: #Bf2604;
+    }
+}
+
+@keyframes ballReverse {
+  from {
+    transform: translateX(0);
+    background-color: #Bf2604;
+  }
+  to {
+    transform: translateX(75px);
+    background-color: white;
+  }
+}
+
+@keyframes retangleReverse {
+  from {      
+    background-color: #Bf2604;
+  }
+  to {     
+    background-color:  white;
+  }
+}
