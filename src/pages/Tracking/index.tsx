@@ -6,13 +6,15 @@ import './styles.scss';
 import api from '../../services/api';
 
 const Tracking = () => {
-  const [tracking, setTracking] = useState<any>();
+  const [tracking, setTracking] = useState<any>(null);
   const [search, setSearch] = useState<string>('');
 
   const updateOrderDetails = (order: any) => {
     api.get(`/orders/${order?.id}`)
       .then((response) => {
         setTracking(response.data);
+        console.log(response.data);
+
       });
 
     setTimeout(() => {
@@ -22,8 +24,12 @@ const Tracking = () => {
 
   useEffect(() => {
     const order = JSON.parse(localStorage.getItem('order') || '{}');
-    if (order)
+    if (order) {
       updateOrderDetails(order);
+    } else {
+      setTracking(null);
+    }
+
   }, []);
 
   const handleChange = (e: any) => {
@@ -57,15 +63,15 @@ const Tracking = () => {
             <div className="tracking-show">
               <div className="situation">
                 <span>Pedido Recebido</span>
-                <div className={tracking?.status.status === "PREPARING" || tracking?.status.status === "DELIVERY" || tracking?.status.status === "DONE" ? "active" : ''} />
+                <div className={tracking?.status === "PREPARING" || tracking?.status === "DELIVERY" || tracking?.status === "DONE" ? "active" : ''} />
               </div>
               <div className="situation">
                 <span>Em Preparo</span>
-                <div className={tracking?.status.status === "PREPARING" || tracking?.status.status === "DELIVERY" ? "active" : ''} />
+                <div className={tracking?.status === "PREPARING" || tracking?.status === "DELIVERY" ? "active" : ''} />
               </div>
               <div className="situation">
                 <span>Saiu para entrega</span>
-                <div className={tracking?.status.status === "DELIVERY" ? "active" : ''} />
+                <div className={tracking?.status === "DELIVERY" ? "active" : ''} />
               </div>
             </div>
           </div>
@@ -86,7 +92,7 @@ const Tracking = () => {
                     <tr key={item.id}>
                       <td>{item.quantity}</td>
                       <td>{item.product.name}</td>
-                      <td>R$ {(item.product.price / 100).toFixed(2)}</td>
+                      <td>R$ {(item.price / 100).toFixed(2)}</td>
                     </tr>
                   ))}
                 </tbody>

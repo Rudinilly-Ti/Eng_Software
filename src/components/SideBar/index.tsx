@@ -30,13 +30,13 @@ const SideBar = ({ user, resized, setResized }: Props) => {
   useEffect(() => {
     if (location.pathname === '/tracking') {
       setActive(false);
-    } else if (location.pathname === '/orders' && user) {
+    } else if (location.pathname === '/' && user) {
       setActive(true);
       setActive2(true);
     } else if (location.pathname === '/balance' && user) {
       setActive(true);
       setActive2(false);
-    } else if (location.pathname === '/' && user) {
+    } else if (location.pathname === '/orders' && user) {
       setActive(false);
       setActive2(true);
     } else if (location.pathname === '/categories' && user) {
@@ -76,7 +76,7 @@ const SideBar = ({ user, resized, setResized }: Props) => {
           <ul className="sidebar-list">
             <li className={active && active2 ? 'sidebar-active' : ''}>
               <button
-                onClick={() => handleActive(true, true, '/products')}
+                onClick={() => handleActive(true, true, '/')}
                 type="button"
               >
                 {!resized ? (
@@ -118,7 +118,7 @@ const SideBar = ({ user, resized, setResized }: Props) => {
             type="button"
             onClick={() => {
               context.logout();
-              navigate('/products');
+              navigate('/');
             }}
           >
             <FontAwesomeIcon
@@ -154,7 +154,7 @@ const SideBar = ({ user, resized, setResized }: Props) => {
           <li className={active ? 'sidebar-active' : ''}>
             <button
               onClick={() =>
-                active ? {} : handleActive(true, false, '/products')
+                active ? {} : handleActive(true, false, '/')
               }
               type="button"
             >
