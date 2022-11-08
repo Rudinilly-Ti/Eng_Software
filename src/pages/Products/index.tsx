@@ -244,7 +244,7 @@ const Products = () => {
         className={alertJSON.className}
       />
       <div className="products-container">
-        {!shopOpen?.status ? (
+        {shopOpen?.status ? (
           <>
             <div className="products-links">
               <a href="#pizzas">Pizzas</a>

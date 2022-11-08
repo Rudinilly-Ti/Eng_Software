@@ -13,8 +13,6 @@ const Tracking = () => {
     api.get(`/orders/${order?.id}`)
       .then((response) => {
         setTracking(response.data);
-        console.log(response.data);
-
       });
 
     setTimeout(() => {
