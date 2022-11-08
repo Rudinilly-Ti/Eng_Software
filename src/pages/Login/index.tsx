@@ -30,7 +30,7 @@ const Login = () => {
       .post('/user-manager/login', data)
       .then((response) => {
         context.login(response.data.token);
-        navigate('/products');
+        navigate('/');
       })
       .catch(() => {
         setTimeout(() => {
