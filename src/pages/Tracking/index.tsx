@@ -16,7 +16,7 @@ const Tracking = () => {
       });
 
     setTimeout(() => {
-      updateOrderDetails(order);
+      updateOrderDetails(tracking);
     }, 5000);
   };
 
@@ -35,8 +35,10 @@ const Tracking = () => {
   }
 
   const handleSearch = () => {
+    localStorage.removeItem('order');
     api.get(`/orders/${search}`)
       .then((response) => {
+        localStorage.setItem('order', JSON.stringify(response.data));
         setTracking(response.data);
       });
   }
@@ -61,15 +63,15 @@ const Tracking = () => {
             <div className="tracking-show">
               <div className="situation">
                 <span>Pedido Recebido</span>
-                <div className={tracking?.status?.status === "PREPARING" || tracking?.status === "DELIVERY" || tracking?.status === "DONE" ? "active" : ''} />
+                <div className={tracking?.status?.status === "PREPARING" || tracking?.status?.status === "DELIVERY" || tracking?.status?.status === "DONE" ? "active" : ''} />
               </div>
               <div className="situation">
                 <span>Em Preparo</span>
-                <div className={tracking?.status?.status === "PREPARING" || tracking?.status === "DELIVERY" ? "active" : ''} />
+                <div className={tracking?.status?.status === "PREPARING" || tracking?.status?.status === "DONE" ? "active" : ''} />
               </div>
               <div className="situation">
                 <span>Saiu para entrega</span>
-                <div className={tracking?.status?.status === "DELIVERY" ? "active" : ''} />
+                <div className={tracking?.status?.status === "DELIVERY" || tracking?.status?.status === "DONE" ? "active" : ''} />
               </div>
             </div>
           </div>
